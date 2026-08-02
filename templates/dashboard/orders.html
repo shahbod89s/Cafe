@@ -1,366 +1,498 @@
 {% load static %}
 
-<section class="menu-header dashboard-header">
 
-    <h1>داشبورد مدیریت</h1>
-
-    <form method="POST" action="{% url 'logout' %}">
-        {% csrf_token %}
-        <button class="logout-btn">خروج</button>
-    </form>
-
-    <a href="{% url 'foods_manage' %}" class="hero-btn">
-        مدیریت غذاها
-    </a>
-
-</section>
-
-<div class="menu-container">
-
-    <div class="food-card">
-        <h2>سفارش‌های جدید</h2>
-        <p>{{ new_orders }}</p>
-    </div>
-
-    <div class="food-card">
-        <h2>در حال آماده‌سازی</h2>
-        <p>{{ preparing_orders }}</p>
-    </div>
-
-    <div class="food-card">
-        <h2>آماده تحویل</h2>
-        <p>{{ ready_orders }}</p>
-    </div>
-
-</div>
-
-<div class="menu-container">
-
-    {% for order in orders %}
-
-    <div class="food-card">
-
-        <h2>{{ order.food.name }}</h2>
-
-        <p>مشتری: {{ order.customer_name }}</p>
-
-        <p>شماره میز: {{ order.table_number }}</p>
-
-        <p>تعداد: {{ order.quantity }}</p>
-
-        <p>وضعیت: {{ order.get_status_display }}</p>
-
-        <p>{{ order.created_at }}</p>
-
-    </div>
-
-    {% empty %}
-
-    <h2>سفارشی وجود ندارد</h2>
-
-    {% endfor %}
-
-</div>
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
 
 <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-    <style>
-        /* DARK MODE */
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-        body.dark-mode {
 
-            background: #0e0d0b !important;
+<style>
 
-            color: #d8c7a0 !important;
 
-        }
+/* DARK MODE */
 
+body.dark-mode {
 
-        /* حذف افکت سفید کاغذی */
+    background: #0e0d0b !important;
+    color: #d8c7a0 !important;
 
-        body.dark-mode::before {
+}
 
-            opacity: .08;
 
-        }
+body.dark-mode::before {
 
+    opacity: .08;
 
+}
 
-        /* کارت‌ها */
 
-        body.dark-mode .food-card,
-        body.dark-mode .food-detail,
-        body.dark-mode .login-box,
-        body.dark-mode .order-form {
 
-            background:
-                linear-gradient(145deg,
-                    rgba(255, 255, 255, .03),
-                    transparent),
-                #171512 !important;
+/* کارت‌ها */
 
+body.dark-mode .food-card,
+body.dark-mode .food-detail,
+body.dark-mode .login-box,
+body.dark-mode .order-form {
 
-            border: 1px solid #40351f !important;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.03),
+            transparent
+        ),
+        #171512 !important;
 
 
-            box-shadow:
+    border:1px solid #40351f !important;
 
-                0 25px 60px rgba(0, 0, 0, .75);
 
-        }
+    box-shadow:
+    0 25px 60px rgba(0,0,0,.75);
 
+}
 
 
-        /* عنوان‌ها */
 
-        body.dark-mode h1,
-        body.dark-mode h2,
-        body.dark-mode h3 {
 
-            color: #c9a84c !important;
+/* عنوان‌ها */
 
-        }
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3 {
 
+    color:#c9a84c !important;
 
+}
 
-        /* متن‌ها */
 
-        body.dark-mode p,
-        body.dark-mode label,
-        body.dark-mode span {
 
-            color: #b8a37b !important;
+/* متن */
 
-        }
+body.dark-mode p,
+body.dark-mode label,
+body.dark-mode span {
 
+    color:#b8a37b !important;
 
+}
 
-        /* عکس غذا */
 
-        body.dark-mode .food-card img,
-        body.dark-mode .detail-image img {
 
-            border-color: #8f7430 !important;
 
-            background: #111 !important;
+/* عکس */
 
-        }
+body.dark-mode img {
 
+    border-color:#8f7430 !important;
 
+}
 
-        /* دکمه‌های طلایی */
 
-        body.dark-mode .hero-btn,
-        body.dark-mode .back-btn {
 
-            background: #8a6b24 !important;
+/* دکمه‌ها */
 
-            color: #111 !important;
+body.dark-mode .hero-btn {
 
-        }
+    background:#8a6b24 !important;
+    color:#111 !important;
 
+}
 
 
-        body.dark-mode .hero-btn:hover,
-        body.dark-mode .back-btn:hover {
+body.dark-mode .hero-btn:hover {
 
-            background: #b8953e !important;
+    background:#b8953e !important;
 
-        }
+}
 
 
 
-        /* قیمت‌ها */
+/* input */
 
-        body.dark-mode .price,
-        body.dark-mode .detail-price {
+body.dark-mode input,
+body.dark-mode textarea {
 
-            background: #c09a3d !important;
+    background:#111 !important;
+    border:1px solid #4b3b20 !important;
+    color:#eee !important;
 
-            color: #16120c !important;
+}
 
-        }
 
 
+/* Theme Button */
 
-        /* حذف */
+.theme-btn {
 
-        body.dark-mode .delete-btn {
+    position:fixed;
+    top:20px;
+    right:20px;
 
-            background: #7d2923 !important;
+    width:48px;
+    height:48px;
 
-            color: white !important;
+    border-radius:50%;
 
-        }
+    border:1px solid #c69b3c;
 
+    background:#fff4d6;
 
+    color:#8b641e;
 
-        /* ورودی‌ها */
+    font-size:22px;
 
-        body.dark-mode input,
-        body.dark-mode textarea {
+    cursor:pointer;
 
-            background: #111 !important;
+}
 
-            border: 1px solid #4b3b20 !important;
 
-            color: #eee !important;
 
-        }
+/* ==========================
+Order Status
+========================== */
 
 
+.status-new {
 
-        /* دکمه تغییر حالت */
+    border-top:8px solid #f1c40f;
 
-        #theme-toggle {
+}
 
-            background: #c69b3c;
 
-            color: #201508;
+.status-preparing {
 
-            border: 1px solid #8a6b24;
+    border-top:8px solid #e67e22;
 
-        }
+}
 
 
+.status-ready {
 
-        body.dark-mode #theme-toggle {
+    border-top:8px solid #3498db;
 
-            background: #191611;
+}
 
-            color: #c69b3c;
 
-            border: 1px solid #6d5525;
+.status-text {
 
-        }
+    margin-top:15px;
 
-        .theme-btn {
+    font-weight:bold;
 
-            position: fixed;
+    font-size:17px;
 
-            top: 20px;
-            right: 20px;
+}
 
-            width: 48px;
-            height: 48px;
 
-            border-radius: 50%;
+.status-new .status-text {
 
-            border: 1px solid #c69b3c;
+    color:#d4a100;
 
-            background: #fff4d6;
+}
 
-            color: #8b641e;
 
-            font-size: 22px;
+.status-preparing .status-text {
 
-            display: flex;
+    color:#d35400;
 
-            justify-content: center;
+}
 
-            align-items: center;
 
-            line-height: 1;
+.status-ready .status-text {
 
-            padding: 0;
+    color:#2980b9;
 
-            cursor: pointer;
+}
 
-            box-shadow:
-                0 8px 25px rgba(70, 40, 10, .25);
 
-            transition: .3s;
 
-        }
+</style>
 
-
-        .theme-btn:hover {
-
-            transform: scale(1.1);
-
-        }
-
-
-
-        body.dark-mode .theme-btn {
-
-            background: #171512;
-
-            color: #c69b3c;
-
-            border-color: #80602a;
-
-        }
-
-        body.dark-mode .logo {
-
-            background:
-                radial-gradient(circle,
-                    #2a2418,
-                    #16130e) !important;
-
-
-            border-color: #8f7430;
-
-            box-shadow:
-                0 15px 40px rgba(0, 0, 0, .7);
-
-        }
-
-
-        body.dark-mode .logo span {
-
-            color: #c69b3c;
-
-        }
-
-
-        body.dark-mode .logo h1 {
-
-            color: #d4af5a;
-
-        }
-
-
-        body.dark-mode .logo small {
-
-            color: #a89060;
-
-        }
-
-        body.dark-mode .gold-line {
-
-            background: #8f7430;
-
-        }
-
-        body.dark-mode .categories a {
-
-            background: #1b1711 !important;
-
-            color: #c9a84c !important;
-
-            border-color: #6d5525 !important;
-
-            box-shadow:
-                0 8px 20px rgba(0, 0, 0, .4);
-
-        }
-
-
-        body.dark-mode .categories a:hover {
-
-            background: #8a6b24 !important;
-
-            color: #17120c !important;
-
-        }
-        
-    </style>
 
 </head>
+
+
+
+<body>
+
+
+
+<section class="menu-header dashboard-header">
+
+
+<h1>
+داشبورد مدیریت
+</h1>
+
+
+
+<form method="POST" action="{% url 'logout' %}">
+
+{% csrf_token %}
+
+<button class="logout-btn">
+
+خروج
+
+</button>
+
+
+</form>
+
+
+
+
+<a href="{% url 'foods_manage' %}" class="hero-btn">
+
+مدیریت غذاها
+
+</a>
+
+
+
+<a href="{% url 'completed_orders' %}" class="hero-btn">
+
+سفارش‌های تحویل‌شده
+
+</a>
+
+
+</section>
+
+
+
+
+
+<div class="menu-container">
+
+
+
+{% for order in orders %}
+
+
+
+<div class="food-card
+
+{% if order.status == 'new' %}
+
+status-new
+
+
+{% elif order.status == 'preparing' %}
+
+status-preparing
+
+
+{% elif order.status == 'ready' %}
+
+status-ready
+
+
+{% endif %}
+
+">
+
+
+
+
+
+<h2>
+
+{{ order.food.name }}
+
+</h2>
+
+
+
+
+
+<p>
+
+مشتری:
+{{ order.customer_name }}
+
+</p>
+
+
+
+<p>
+
+تعداد:
+
+{{ order.quantity }}
+
+</p>
+
+
+
+
+
+<p class="status-text">
+
+
+{% if order.status == "new" %}
+
+🟡 جدید
+
+
+{% elif order.status == "preparing" %}
+
+🟠 در حال آماده‌سازی
+
+
+{% elif order.status == "ready" %}
+
+🔵 آماده تحویل
+
+
+{% elif order.status == "done" %}
+
+🟢 تحویل داده شد
+
+
+{% endif %}
+
+
+
+</p>
+
+
+
+
+
+<div style="margin-top:20px;">
+
+
+
+{% if order.status == "new" %}
+
+
+
+<form method="POST" action="{% url 'update_order_status' order.id %}">
+
+{% csrf_token %}
+
+
+<input type="hidden" name="status" value="preparing">
+
+
+
+<button class="hero-btn"
+style="background:#e67e22;width:100%;">
+
+شروع آماده‌سازی
+
+</button>
+
+
+
+</form>
+
+
+
+
+
+{% elif order.status == "preparing" %}
+
+
+
+
+<form method="POST" action="{% url 'update_order_status' order.id %}">
+
+{% csrf_token %}
+
+
+<input type="hidden" name="status" value="ready">
+
+
+
+<button class="hero-btn"
+style="background:#3498db;width:100%;">
+
+آماده شد
+
+</button>
+
+
+
+</form>
+
+
+
+
+
+{% elif order.status == "ready" %}
+
+
+
+
+<form method="POST" action="{% url 'update_order_status' order.id %}">
+
+{% csrf_token %}
+
+
+<input type="hidden" name="status" value="done">
+
+
+
+<button class="hero-btn"
+style="background:#27ae60;width:100%;">
+
+تحویل داده شد
+
+</button>
+
+
+
+</form>
+
+
+
+
+{% endif %}
+
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+{% empty %}
+
+
+
+<h2>
+
+سفارشی وجود ندارد
+
+</h2>
+
+
+
+{% endfor %}
+
+
+
+
+</div>
+
+
+
+
+</body>
+
+</html>

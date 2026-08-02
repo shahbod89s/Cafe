@@ -1,110 +1,71 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from menu.models import Order, Food
 from django.contrib.auth.decorators import user_passes_test
+
+from menu.models import Order, Food
 from menu.forms import FoodForm
-from django.core.management import call_command
-from django.http import HttpResponse
-from django.contrib.auth import get_user_model
-from django.http import HttpResponse
 
 
-def create_admin(request):
-    User = get_user_model()
-
-    username = "shahbodshirazpour"
-    password = "1378shahbod1389!"
-
-    if not User.objects.filter(username=username).exists():
-        User.objects.create_superuser(
-            username=username,
-            email="shirazpours@gmail.com",
-            password=password
-        )
-        return HttpResponse("Superuser created!")
-
-    return HttpResponse("Superuser already exists!")
-
-def migrate_database(request):
-    call_command("migrate")
-    return HttpResponse("Migration completed!")
-
-def dashboard_orders(request):
-    orders = Order.objects.all().order_by("-created_at")
-
-    new_orders = Order.objects.filter(
-        status="new"
-    ).count()
-
-
-    preparing_orders = Order.objects.filter(
-        status="preparing"
-    ).count()
-
-
-    ready_orders = Order.objects.filter(
-        status="ready"
-    ).count()
-
-
-    context = {
-        "orders": orders,
-        "new_orders": new_orders,
-        "preparing_orders": preparing_orders,
-        "ready_orders": ready_orders,
-    }
-
-
-    return render(
-        request,
-        "dashboard/orders.html",
-        context
-    )
-    
-def update_order_status(request, id):
-    order = get_object_or_404(
-        Order,
-        id=id
-    )
-
-    if request.method == "POST":
-
-        status = request.POST.get(
-            "status"
-        )
-        order.status = status
-        order.save()
-
-    return redirect(
-        "dashboard"
-    )
-    
+# فقط ادمین وارد داشبورد شود
 def admin_check(user):
     return user.is_staff
+
+
+# ==========================
+# Dashboard
+# ==========================
 
 @user_passes_test(admin_check)
 def dashboard_orders(request):
 
-    orders = Order.objects.all().order_by("-created_at")
-
-    new_orders = Order.objects.filter(status="new").count()
-
-    preparing_orders = Order.objects.filter(status="preparing").count()
-
-    ready_orders = Order.objects.filter(status="ready").count()
+    # فقط سفارش‌هایی که هنوز تحویل داده نشده‌اند
+    orders = Order.objects.exclude(
+        status="done"
+    ).order_by("-created_at")
 
     context = {
         "orders": orders,
-        "new_orders": new_orders,
-        "preparing_orders": preparing_orders,
-        "ready_orders": ready_orders,
+
+        "new_orders":
+            Order.objects.filter(status="new").count(),
+
+        "preparing_orders":
+            Order.objects.filter(status="preparing").count(),
+
+        "ready_orders":
+            Order.objects.filter(status="ready").count(),
     }
 
     return render(
         request,
         "dashboard/orders.html",
-        context
+        context,
     )
-    
+
+
+# ==========================
+# تغییر وضعیت سفارش
+# ==========================
+
+@user_passes_test(admin_check)
+def update_order_status(request, id):
+
+    order = get_object_or_404(
+        Order,
+        id=id,
+    )
+
+    if request.method == "POST":
+        order.status = request.POST.get("status")
+        order.save()
+
+    return redirect("dashboard")
+
+
+# ==========================
+# مدیریت غذاها
+# ==========================
+
+@user_passes_test(admin_check)
 def foods_manage(request):
 
     foods = Food.objects.all()
@@ -116,7 +77,12 @@ def foods_manage(request):
             "foods": foods
         }
     )
-    
+
+
+# ==========================
+# افزودن غذا
+# ==========================
+
 @user_passes_test(admin_check)
 def add_food(request):
 
@@ -128,15 +94,10 @@ def add_food(request):
         )
 
         if form.is_valid():
-
             form.save()
-
-            return redirect(
-                "foods_manage"
-            )
+            return redirect("foods_manage")
 
     else:
-
         form = FoodForm()
 
     return render(
@@ -146,7 +107,12 @@ def add_food(request):
             "form": form
         }
     )
-    
+
+
+# ==========================
+# ویرایش غذا
+# ==========================
+
 @user_passes_test(admin_check)
 def edit_food(request, id):
 
@@ -164,18 +130,11 @@ def edit_food(request, id):
         )
 
         if form.is_valid():
-
             form.save()
-
-            return redirect(
-                "foods_manage"
-            )
+            return redirect("foods_manage")
 
     else:
-
-        form = FoodForm(
-            instance=food
-        )
+        form = FoodForm(instance=food)
 
     return render(
         request,
@@ -185,7 +144,12 @@ def edit_food(request, id):
             "food": food,
         }
     )
-    
+
+
+# ==========================
+# حذف غذا
+# ==========================
+
 @user_passes_test(admin_check)
 def delete_food(request, id):
 
@@ -195,17 +159,33 @@ def delete_food(request, id):
     )
 
     if request.method == "POST":
-
         food.delete()
-
-        return redirect(
-            "foods_manage"
-        )
+        return redirect("foods_manage")
 
     return render(
         request,
         "dashboard/delete_food.html",
         {
             "food": food
+        }
+    )
+
+
+# ==========================
+# سفارش‌های تحویل‌شده
+# ==========================
+
+@user_passes_test(admin_check)
+def completed_orders(request):
+
+    orders = Order.objects.filter(
+        status="done"
+    ).order_by("-created_at")
+
+    return render(
+        request,
+        "dashboard/completed_orders.html",
+        {
+            "orders": orders
         }
     )

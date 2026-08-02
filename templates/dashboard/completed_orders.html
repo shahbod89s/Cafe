@@ -1,0 +1,56 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>سفارش‌های تحویل‌شده</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+
+<body>
+
+<section class="menu-header">
+
+    <h1>سفارش‌های تحویل‌شده</h1>
+
+    <a href="{% url 'dashboard' %}" class="hero-btn">
+        بازگشت
+    </a>
+
+</section>
+
+<div class="menu-container">
+
+{% for order in orders %}
+
+<div class="food-card">
+
+    <h2>{{ order.food.name }}</h2>
+
+    <p>مشتری: {{ order.customer_name }}</p>
+
+    <p>میز: {{ order.table_number }}</p>
+
+    <p>تعداد: {{ order.quantity }}</p>
+
+    <p>{{ order.created_at }}</p>
+
+</div>
+
+{% empty %}
+
+<h2>سفارش تحویل‌شده‌ای وجود ندارد.</h2>
+
+{% endfor %}
+
+</div>
+
+</body>
+
+</html>
