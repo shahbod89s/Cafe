@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+
+{% load static %}
+
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ food.name }}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=2">
+</head>
+
+<body>
+
+    <section class="food-detail">
+
+        <div class="detail-image">
+            <img src="{{ food.image.url }}" alt="{{ food.name }}">
+        </div>
+
+        <div class="detail-info">
+
+            <span class="detail-category">
+                {{ food.get_category_display }}
+            </span>
+
+            <h1>
+                {{ food.name }}
+            </h1>
+
+            <p class="detail-description">
+                {{ food.description }}
+            </p>
+
+            <div class="ingredients">
+
+                <h3>
+                    مواد تشکیل دهنده
+                </h3>
+
+                <p>
+                    {{ food.ingredients|linebreaksbr }}
+                </p>
+
+            </div>
+
+            <div class="detail-price">
+                {{ food.price }} تومان
+            </div>
+
+            {% if success %}
+
+            <div class="success-message">
+                ✅ سفارش شما با موفقیت ثبت شد.
+                <br>
+                به زودی آماده‌سازی آغاز می‌شود.
+            </div>
+
+            {% endif %}
+
+            <div class="order-box">
+
+                <form method="POST" class="order-form">
+
+                    {% csrf_token %}
+
+                    <h2>
+                        ثبت سفارش
+                    </h2>
+
+                    <div class="form-group">
+
+                        <label>
+                            نام و نام خانوادگی
+                        </label>
+
+                        {{ form.customer_name }}
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            شماره تماس
+                        </label>
+
+                        {{ form.phone }}
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            شماره میز
+                        </label>
+
+                        {{ form.table_number }}
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            تعداد
+                        </label>
+
+                        {{ form.quantity }}
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            توضیحات
+                        </label>
+
+                        {{ form.note }}
+
+                    </div>
+
+                    <button type="submit" class="order-btn">
+                        🍽 ثبت سفارش
+                    </button>
+
+                </form>
+
+            </div>
+
+            <a href="{% url 'menu' %}" class="back-btn">
+                بازگشت به منو
+            </a>
+
+        </div>
+
+    </section>
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const nameInput = document.getElementById("id_customer_name");
+            const phoneInput = document.getElementById("id_phone");
+            const tableInput = document.getElementById("id_table_number");
+            const form = document.querySelector(".order-form");
+
+            if (nameInput && localStorage.getItem("customer_name")) {
+                nameInput.value = localStorage.getItem("customer_name");
+            }
+
+            if (phoneInput && localStorage.getItem("customer_phone")) {
+                phoneInput.value = localStorage.getItem("customer_phone");
+            }
+
+            if (tableInput && localStorage.getItem("table_number")) {
+                tableInput.value = localStorage.getItem("table_number");
+            }
+
+            if (form) {
+
+                form.addEventListener("submit", function () {
+
+                    if (nameInput) {
+                        localStorage.setItem(
+                            "customer_name",
+                            nameInput.value
+                        );
+                    }
+
+                    if (phoneInput) {
+                        localStorage.setItem(
+                            "customer_phone",
+                            phoneInput.value
+                        );
+                    }
+
+                    if (tableInput) {
+                        localStorage.setItem(
+                            "table_number",
+                            tableInput.value
+                        );
+                    }
+
+                });
+
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>
+
+{% endblock %}

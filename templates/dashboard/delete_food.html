@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<!DOCTYPE html>
+
+<html lang="fa" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>حذف غذا</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+
+<body>
+
+    <section class="menu-header">
+
+        <h1>
+
+            حذف غذا
+
+        </h1>
+
+    </section>
+
+    <div class="food-detail">
+
+        <div class="detail-info">
+
+            <h2>
+
+                آیا از حذف
+
+                {{ food.name }}
+
+                مطمئن هستید؟
+
+            </h2>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <button type="submit" style="
+    display:inline-flex;
+    justify-content:center;
+    align-items:center;
+    padding:12px 35px;
+    background:#b12b22;
+    color:white;
+    border:none;
+    border-radius:35px;
+    font-family:inherit;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+">
+                    حذف
+                </button>
+                <a href="{% url 'foods_manage' %}" class="hero-btn">
+
+                    انصراف
+
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+
+{% endblock %}

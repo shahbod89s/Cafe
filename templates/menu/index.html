@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+
+{% load static %}
+
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<header class="menu-header">
+
+    <div class="logo">
+
+        <span>★</span>
+
+        <h1>
+            کافه شهبد
+        </h1>
+
+        <small>
+            EST • 2026
+        </small>
+
+    </div>
+
+
+    <div class="gold-line"></div>
+
+
+    <p>
+        طعم اصیل، خاطره‌ای ماندگار
+    </p>
+
+</header>
+
+<div class="categories">
+
+<a href="{% url 'category' 'main' %}">
+غذاهای اصلی
+</a>
+
+
+<a href="{% url 'category' 'dessert' %}">
+دسر
+</a>
+
+
+<a href="{% url 'category' 'drink' %}">
+نوشیدنی
+</a>
+
+
+</div>
+
+<section class="menu-container" id="menu">
+
+    {% for food in foods %}
+
+    <a href="{% url 'food_detail' food.id %}" class="food-link">
+
+        <div class="food-card reveal">
+
+            <span class="category">
+
+                {{ food.get_category_display }}
+
+            </span>
+
+            {% if food.is_special %}
+            <div class="special-badge">
+                ویژه
+            </div>
+            {% endif %}
+
+            {% if not food.is_available %}
+
+            <div class="unavailable">
+                ناموجود
+            </div>
+
+            {% endif %}
+
+            <img src="{{ food.image.url }}" alt="{{ food.name }}">
+
+
+            <h2>
+                {{ food.name }}
+            </h2>
+
+
+            <p>
+                {{ food.description }}
+            </p>
+
+
+            <div class="food-bottom">
+
+                <span class="price">
+                    {{ food.price }} تومان
+                </span>
+
+
+                <button>
+                    جزئیات
+                </button>
+
+            </div>
+
+
+        </div>
+
+    </a>
+
+    {% endfor %}
+
+</section>
+
+{% endblock %}

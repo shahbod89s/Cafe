@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+
+{% load static %}
+
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+    <section class="menu-header dashboard-header">
+
+        <h1>
+            داشبورد مدیریت
+        </h1>
+
+
+        <form method="POST" action="{% url 'logout' %}">
+
+            {% csrf_token %}
+
+            <button class="logout-btn">
+                خروج
+            </button>
+
+        </form>
+
+        <a href="{% url 'foods_manage' %}" style="
+    display:inline-flex;
+    justify-content:center;
+    align-items:center;
+    padding:12px 30px;
+    background:#c69b3c;
+    color:#3a220c;
+    border-radius:35px;
+    text-decoration:none;
+    font-weight:bold;
+    margin-top:20px;
+">
+            مدیریت غذاها
+        </a>
+
+
+    </section>
+
+    <div class="menu-container">
+
+        <div class="food-card">
+            <h2>
+                سفارش‌های جدید
+            </h2>
+            <p>
+                {{ new_orders }}
+            </p>
+        </div>
+
+        <div class="food-card">
+            <h2>
+                در حال آماده‌سازی
+            </h2>
+            <p>
+                {{ preparing_orders }}
+            </p>
+        </div>
+
+        <div class="food-card">
+            <h2>
+                آماده تحویل
+            </h2>
+            <p>
+                {{ ready_orders }}
+            </p>
+        </div>
+
+    </div>
+
+    <div class="menu-container">
+
+        {% for order in orders %}
+
+        <div class="food-card">
+
+            <h2>
+                {{ order.food.name }}
+            </h2>
+
+            <p>
+                مشتری:
+                {{ order.customer_name }}
+            </p>
+
+            <p>
+                شماره میز:
+                {{ order.table_number }}
+            </p>
+
+            <p>
+                تعداد:
+                {{ order.quantity }}
+            </p>
+
+            <p>
+                وضعیت:
+                {{ order.get_status_display }}
+            </p>
+
+            <p>
+                {{ order.created_at }}
+            </p>
+
+        </div>
+
+        {% empty %}
+
+        <h2>
+            سفارشی وجود ندارد
+        </h2>
+
+        {% endfor %}
+
+    </div>
+
+</body>
+
+</html>
+
+{% endblock %}

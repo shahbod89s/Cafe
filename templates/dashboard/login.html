@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+
+{% load static %}
+
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ورود مدیریت</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+    <section class="login-box">
+
+        <div>
+
+            <div class="detail-info">
+
+                <h1>
+                    ورود مدیر
+                </h1>
+
+                <form method="POST" class="order-form">
+
+                    {% csrf_token %}
+
+                    {{ form.as_p }}
+
+                    <button class="order-btn">
+                        ورود
+                    </button>
+
+                </form>
+
+            </div>
+
+    </section>
+
+</body>
+
+</html>
+
+{% endblock %}

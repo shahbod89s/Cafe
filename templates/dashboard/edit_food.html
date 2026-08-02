@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<!DOCTYPE html>
+
+<html lang="fa" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>ویرایش غذا</title>
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+
+
+<body>
+
+
+
+<section style="
+    text-align:center;
+    padding:50px 20px 30px;
+">
+
+<h1 style="
+    font-family:Georgia,serif;
+    color:#5b3516;
+    font-size:42px;
+">
+
+ویرایش غذا
+
+</h1>
+
+</section>
+
+
+
+
+
+<div style="
+    width:90%;
+    max-width:600px;
+    margin:40px auto;
+    background:#fff8e8;
+    padding:40px;
+    border-radius:30px;
+    border:1px solid #d6b878;
+    box-shadow:0 20px 45px rgba(70,40,10,.18);
+">
+
+
+
+<form method="POST" enctype="multipart/form-data">
+
+{% csrf_token %}
+
+
+
+<div style="
+    color:#5b3516;
+    font-family:inherit;
+    font-size:17px;
+">
+
+{{ form.as_p }}
+
+</div>
+
+
+
+
+<button type="submit" style="
+    width:100%;
+    margin-top:20px;
+    padding:15px;
+    background:#5b3516;
+    color:#f5d78e;
+    border:none;
+    border-radius:35px;
+    font-family:inherit;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+">
+
+ذخیره تغییرات
+
+</button>
+
+
+
+
+<a href="{% url 'foods_manage' %}" style="
+    display:block;
+    text-align:center;
+    margin-top:20px;
+    padding:14px;
+    background:#c69b3c;
+    color:#3a220c;
+    border-radius:35px;
+    text-decoration:none;
+    font-weight:bold;
+">
+
+بازگشت
+
+</a>
+
+
+
+</form>
+
+
+
+
+</div>
+
+
+
+
+</body>
+
+</html>
+
+
+{% endblock %}

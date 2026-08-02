@@ -1,0 +1,76 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>افزودن غذا</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+
+<body>
+
+<section class="menu-header">
+
+    <h1>
+        افزودن غذای جدید
+    </h1>
+
+</section>
+
+<div class="food-detail">
+
+    <div class="detail-info">
+
+        <form method="POST" enctype="multipart/form-data" class="order-form">
+
+            {% csrf_token %}
+
+            {% for field in form %}
+
+            <div class="form-group">
+
+                <label>
+
+                    {{ field.label }}
+
+                </label>
+
+                {{ field }}
+
+                {% if field.errors %}
+
+                <div class="form-error">
+
+                    {{ field.errors }}
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+            {% endfor %}
+
+            <button
+                type="submit"
+                class="order-btn">
+
+                ثبت غذا
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
