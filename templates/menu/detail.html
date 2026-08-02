@@ -21,7 +21,7 @@
     <section class="food-detail">
 
         <div class="detail-image">
-            <img src="{{ food.image.url }}" alt="{{ food.name }}">
+            <img src="{% static 'images/' %}{{ food.image }}" alt="{{ food.name }}">
         </div>
 
         <div class="detail-info">

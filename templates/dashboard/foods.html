@@ -79,15 +79,15 @@
 
 
             {% if food.image %}
-            <img src="{{ food.image.url }}" style="
-    width:160px;
-    height:160px;
-    object-fit:cover;
-    border-radius:50%;
-    border:5px double #c69b3c;
-    padding:5px;
-    background:white;
-">
+            <img src="{% static 'images/' %}{{ food.image }}" alt="{{ food.name }}">
+            width:160px;
+            height:160px;
+            object-fit:cover;
+            border-radius:50%;
+            border:5px double #c69b3c;
+            padding:5px;
+            background:white;
+            ">
             {% endif %}
 
 

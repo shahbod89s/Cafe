@@ -21,9 +21,7 @@ class Food(models.Model):
 
     price = models.IntegerField()
 
-    image = models.ImageField(
-        upload_to="foods/"
-    )
+    image = models.CharField(max_length=100)
 
     category = models.CharField(
         max_length=20,

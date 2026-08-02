@@ -36,19 +36,19 @@
 
 <div class="categories">
 
-<a href="{% url 'category' 'main' %}">
-غذاهای اصلی
-</a>
+    <a href="{% url 'category' 'main' %}">
+        غذاهای اصلی
+    </a>
 
 
-<a href="{% url 'category' 'dessert' %}">
-دسر
-</a>
+    <a href="{% url 'category' 'dessert' %}">
+        دسر
+    </a>
 
 
-<a href="{% url 'category' 'drink' %}">
-نوشیدنی
-</a>
+    <a href="{% url 'category' 'drink' %}">
+        نوشیدنی
+    </a>
 
 
 </div>
@@ -81,7 +81,7 @@
 
             {% endif %}
 
-            <img src="{{ food.image.url }}" alt="{{ food.name }}">
+            <img src="{% static 'images/' %}{{ food.image }}" alt="{{ food.name }}">
 
 
             <h2>

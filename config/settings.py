@@ -45,8 +45,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'menu',
     'dashboard',
-    'imagekit',
-    'storages',
 ]
 
 MIDDLEWARE = [
@@ -147,18 +145,3 @@ LOGIN_URL = "/dashboard/login/"
 LOGIN_REDIRECT_URL = "/dashboard/"
 
 LOGOUT_REDIRECT_URL = "/dashboard/login/"
-
-AWS_ACCESS_KEY_ID = os.environ.get("IMAGEKIT_PUBLIC_KEY")
-AWS_SECRET_ACCESS_KEY = os.environ.get("IMAGEKIT_PRIVATE_KEY")
-
-AWS_STORAGE_BUCKET_NAME = "media"
-
-AWS_S3_ENDPOINT_URL = "https://ik.imagekit.io/tafdvsgwf"
-
-AWS_S3_FILE_OVERWRITE = False
-
-DEFAULT_FILE_STORAGE = "dashboard.storage.ImageKitStorage"
-
-IMAGEKIT_PRIVATE_KEY = os.environ.get("IMAGEKIT_PRIVATE_KEY")
-IMAGEKIT_PUBLIC_KEY = os.environ.get("IMAGEKIT_PUBLIC_KEY")
-IMAGEKIT_URL_ENDPOINT = "https://ik.imagekit.io/tafdvsgwf"
