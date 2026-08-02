@@ -1,13 +1,18 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 
+from django.utils import timezone
+from collections import defaultdict
+
 from menu.models import Order, Food
 from menu.forms import FoodForm
+
 
 
 # فقط ادمین وارد داشبورد شود
 def admin_check(user):
     return user.is_staff
+
 
 
 # ==========================
@@ -22,24 +27,57 @@ def dashboard_orders(request):
         status="done"
     ).order_by("-created_at")
 
+
+
+    # گروه‌بندی سفارش‌ها بر اساس روز
+    grouped_orders = defaultdict(list)
+
+
+    for order in orders:
+
+        date = timezone.localtime(
+            order.created_at
+        ).date()
+
+
+        grouped_orders[date].append(order)
+
+
+
     context = {
-        "orders": orders,
+
+        "grouped_orders": dict(grouped_orders),
+
 
         "new_orders":
-            Order.objects.filter(status="new").count(),
+            Order.objects.filter(
+                status="new"
+            ).count(),
+
 
         "preparing_orders":
-            Order.objects.filter(status="preparing").count(),
+            Order.objects.filter(
+                status="preparing"
+            ).count(),
+
 
         "ready_orders":
-            Order.objects.filter(status="ready").count(),
+            Order.objects.filter(
+                status="ready"
+            ).count(),
+
     }
+
+
 
     return render(
         request,
         "dashboard/orders.html",
         context,
     )
+
+
+
 
 
 # ==========================
@@ -54,11 +92,18 @@ def update_order_status(request, id):
         id=id,
     )
 
+
     if request.method == "POST":
+
         order.status = request.POST.get("status")
+
         order.save()
 
+
     return redirect("dashboard")
+
+
+
 
 
 # ==========================
@@ -70,6 +115,7 @@ def foods_manage(request):
 
     foods = Food.objects.all()
 
+
     return render(
         request,
         "dashboard/foods.html",
@@ -77,6 +123,9 @@ def foods_manage(request):
             "foods": foods
         }
     )
+
+
+
 
 
 # ==========================
@@ -93,12 +142,19 @@ def add_food(request):
             request.FILES
         )
 
+
         if form.is_valid():
+
             form.save()
+
             return redirect("foods_manage")
 
+
     else:
+
         form = FoodForm()
+
+
 
     return render(
         request,
@@ -107,6 +163,9 @@ def add_food(request):
             "form": form
         }
     )
+
+
+
 
 
 # ==========================
@@ -121,6 +180,7 @@ def edit_food(request, id):
         id=id
     )
 
+
     if request.method == "POST":
 
         form = FoodForm(
@@ -129,12 +189,21 @@ def edit_food(request, id):
             instance=food
         )
 
+
         if form.is_valid():
+
             form.save()
+
             return redirect("foods_manage")
 
+
     else:
-        form = FoodForm(instance=food)
+
+        form = FoodForm(
+            instance=food
+        )
+
+
 
     return render(
         request,
@@ -144,6 +213,9 @@ def edit_food(request, id):
             "food": food,
         }
     )
+
+
+
 
 
 # ==========================
@@ -158,9 +230,14 @@ def delete_food(request, id):
         id=id
     )
 
+
     if request.method == "POST":
+
         food.delete()
+
         return redirect("foods_manage")
+
+
 
     return render(
         request,
@@ -169,6 +246,9 @@ def delete_food(request, id):
             "food": food
         }
     )
+
+
+
 
 
 # ==========================
@@ -181,6 +261,7 @@ def completed_orders(request):
     orders = Order.objects.filter(
         status="done"
     ).order_by("-created_at")
+
 
     return render(
         request,
