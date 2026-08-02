@@ -1,9 +1,136 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+
+<style>
+
+/* وضعیت سفارش */
+
+.status-new{
+    border-top:8px solid #f1c40f;
+}
+
+
+.status-preparing{
+    border-top:8px solid #e67e22;
+}
+
+
+.status-ready{
+    border-top:8px solid #3498db;
+}
+
+
+
+.status-text{
+
+    margin-top:15px;
+
+    font-weight:bold;
+
+    font-size:17px;
+
+}
+
+
+
+.order-date{
+
+    width:100%;
+
+    margin:40px 0 20px;
+
+    padding:15px;
+
+    background:#fff4d6;
+
+    border-right:6px solid #c69b3c;
+
+    border-radius:12px;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+}
+
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+
+<section class="menu-header dashboard-header">
+
+
+<h1>
+داشبورد مدیریت
+</h1>
+
+
+
+<form method="POST" action="{% url 'logout' %}">
+
+{% csrf_token %}
+
+<button class="logout-btn">
+
+خروج
+
+</button>
+
+</form>
+
+
+
+<a href="{% url 'foods_manage' %}" class="hero-btn">
+
+مدیریت غذاها
+
+</a>
+
+
+<a href="{% url 'completed_orders' %}" class="hero-btn">
+
+سفارش‌های تحویل‌شده
+
+</a>
+
+
+</section>
+
+
+
+
+
+<div class="menu-container">
+
+
+
 {% for date, orders in grouped_orders.items %}
+
 
 
 <h2 class="order-date">
 
-    📅 {{ date|date:"Y/m/d" }}
+📅 {{ date|date:"Y/m/d" }}
 
 </h2>
 
@@ -37,48 +164,40 @@ status-ready
 
 
 
-
-
 <h2>
 
-    {{ order.food.name }}
+{{ order.food.name }}
 
 </h2>
 
 
 
-
-
 <p>
 
-    مشتری:
-    {{ order.customer_name }}
+مشتری:
+
+{{ order.customer_name }}
 
 </p>
 
 
 
-
 <p>
 
-    تعداد:
+تعداد:
 
-    {{ order.quantity }}
+{{ order.quantity }}
 
 </p>
 
 
-
-
 <p>
 
-    زمان سفارش:
+زمان سفارش:
 
-    {{ order.created_at|date:"H:i" }}
+{{ order.created_at|date:"H:i" }}
 
 </p>
-
-
 
 
 
@@ -100,13 +219,7 @@ status-ready
 🔵 آماده تحویل
 
 
-{% elif order.status == "done" %}
-
-🟢 تحویل داده شد
-
-
 {% endif %}
-
 
 
 </p>
@@ -116,22 +229,14 @@ status-ready
 
 
 
-
-<div style="margin-top:20px;">
-
-
-
 {% if order.status == "new" %}
-
 
 
 <form method="POST" action="{% url 'update_order_status' order.id %}">
 
 {% csrf_token %}
 
-
 <input type="hidden" name="status" value="preparing">
-
 
 
 <button class="hero-btn"
@@ -147,9 +252,7 @@ style="background:#e67e22;width:100%;">
 
 
 
-
 {% elif order.status == "preparing" %}
-
 
 
 
@@ -157,9 +260,7 @@ style="background:#e67e22;width:100%;">
 
 {% csrf_token %}
 
-
 <input type="hidden" name="status" value="ready">
-
 
 
 <button class="hero-btn"
@@ -185,9 +286,7 @@ style="background:#3498db;width:100%;">
 
 {% csrf_token %}
 
-
 <input type="hidden" name="status" value="done">
-
 
 
 <button class="hero-btn"
@@ -202,14 +301,7 @@ style="background:#27ae60;width:100%;">
 
 
 
-
-
 {% endif %}
-
-
-
-</div>
-
 
 
 
@@ -232,5 +324,15 @@ style="background:#27ae60;width:100%;">
 </h2>
 
 
-
 {% endfor %}
+
+
+
+
+</div>
+
+
+
+</body>
+
+</html>

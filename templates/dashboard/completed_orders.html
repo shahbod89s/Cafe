@@ -1,55 +1,167 @@
 {% load static %}
 
+
 <!DOCTYPE html>
+
 <html lang="fa" dir="rtl">
+
 
 <head>
 
-    <meta charset="UTF-8">
 
-    <title>سفارش‌های تحویل‌ داده شده</title>
+<meta charset="UTF-8">
 
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+
+<style>
+
+
+.completed-title{
+
+text-align:center;
+
+margin:40px;
+
+color:#27ae60;
+
+}
+
+
+
+.done-card{
+
+border-top:8px solid #27ae60;
+
+}
+
+
+
+</style>
+
 
 </head>
 
+
+
 <body>
 
-<section class="menu-header">
 
-    <h1>سفارش‌های تحویل‌شده</h1>
 
-    <a href="{% url 'dashboard' %}" class="hero-btn">
-        بازگشت
-    </a>
+
+<section class="menu-header dashboard-header">
+
+
+<h1>
+
+سفارش‌های تحویل شده
+
+</h1>
+
+
+<a href="{% url 'dashboard' %}" class="hero-btn">
+
+بازگشت به داشبورد
+
+</a>
+
 
 </section>
 
+
+
+
+
+
 <div class="menu-container">
+
+
 
 {% for order in orders %}
 
-<div class="food-card">
 
-    <h2>{{ order.food.name }}</h2>
 
-    <p>مشتری: {{ order.customer_name }}</p>
+<div class="food-card done-card">
 
-    <p>میز: {{ order.table_number }}</p>
 
-    <p>تعداد: {{ order.quantity }}</p>
 
-    <p>{{ order.created_at }}</p>
+<h2>
+
+{{ order.food.name }}
+
+</h2>
+
+
+
+
+<p>
+
+مشتری:
+
+{{ order.customer_name }}
+
+</p>
+
+
+
+
+<p>
+
+تعداد:
+
+{{ order.quantity }}
+
+</p>
+
+
+
+
+<p>
+
+زمان سفارش:
+
+{{ order.created_at|date:"Y/m/d - H:i" }}
+
+</p>
+
+
+
+
+<p class="status-text">
+
+🟢 تحویل داده شد
+
+</p>
+
+
+
 
 </div>
+
+
+
 
 {% empty %}
 
-<h2>سفارش تحویل‌شده‌ای وجود ندارد.</h2>
+
+<h2>
+
+هنوز سفارشی تحویل داده نشده
+
+</h2>
+
+
 
 {% endfor %}
 
+
+
+
 </div>
+
+
+
 
 </body>
 
