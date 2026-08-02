@@ -2,7 +2,6 @@
 
 
 <!DOCTYPE html>
-
 <html lang="fa" dir="rtl">
 
 
@@ -12,31 +11,196 @@
     <meta charset="UTF-8">
 
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 
+
     <style>
-        .completed-title {
+        .completed-container {
 
-            text-align: center;
 
-            margin: 40px;
+            width: 90%;
 
-            color: #27ae60;
+            max-width: 1200px;
+
+            margin: 40px auto;
+
 
         }
 
 
 
-        .done-card {
 
-            border-top: 8px solid #27ae60;
+        .completed-box {
+
+
+            background: #fff8e8;
+
+            padding: 25px;
+
+            border-radius: 18px;
+
+            box-shadow:
+
+                0 15px 35px rgba(0, 0, 0, .12);
+
+
+        }
+
+
+
+        .completed-box h2 {
+
+
+            color: #5a4318;
+
+            margin-bottom: 25px;
+
+
+        }
+
+
+
+
+        .completed-row {
+
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+
+            background: white;
+
+
+            padding: 16px 20px;
+
+
+            margin-bottom: 12px;
+
+
+            border-radius: 12px;
+
+
+            border-right: 7px solid #27ae60;
+
+
+        }
+
+
+
+
+
+        .completed-row span {
+
+
+            font-weight: 700;
+
+            color: #3d2b13;
+
+
+        }
+
+
+
+
+        .status-done {
+
+
+            color: #27ae60 !important;
+
+        }
+
+
+
+
+
+        .hero-btn {
+
+
+            font-family: "Vazirmatn", sans-serif !important;
+
+            font-weight: 700;
+
+            border-radius: 12px;
+
+
+        }
+
+
+
+
+
+        .empty-text {
+
+
+            text-align: center;
+
+            opacity: .7;
+
+
+        }
+
+
+
+
+        body.dark-mode .completed-box {
+
+
+            background: #171512;
+
+
+        }
+
+
+
+
+
+        body.dark-mode .completed-row {
+
+
+            background: #111;
+
+
+        }
+
+
+
+
+
+        body.dark-mode .completed-row span {
+
+
+            color: #c9a84c;
+
+
+        }
+
+
+
+
+
+        body.dark-mode .completed-box h2 {
+
+
+            color: #c69b3c;
+
 
         }
     </style>
 
 
+
 </head>
+
 
 
 
@@ -48,11 +212,14 @@
     <section class="menu-header dashboard-header">
 
 
+
         <h1>
 
             سفارش‌های تحویل شده
 
         </h1>
+
+
 
 
         <a href="{% url 'dashboard' %}" class="hero-btn">
@@ -62,6 +229,7 @@
         </a>
 
 
+
     </section>
 
 
@@ -69,65 +237,115 @@
 
 
 
-    <div class="menu-container">
+
+
+    <div class="completed-container">
 
 
 
-        {% for order in orders %}
 
 
+        <div class="completed-box">
 
-        <div class="food-card done-card">
+
 
 
 
             <h2>
 
-                {{ order.food.name }}
+                🟢 سفارش‌های انجام شده
 
             </h2>
 
 
 
 
-            <p>
 
-                مشتری:
 
-                {{ order.customer_name }}
+
+            {% for order in orders %}
+
+
+
+
+            <div class="completed-row">
+
+
+
+
+
+                <span>
+
+                    #{{order.id}}
+
+                </span>
+
+
+
+
+
+                <span>
+
+                    {{order.food.name}}
+
+                </span>
+
+
+
+
+
+                <span>
+
+                    {{order.customer_name}}
+
+                </span>
+
+
+
+
+
+                <span>
+
+                    {{order.created_at|date:"Y/m/d H:i"}}
+
+                </span>
+
+
+
+
+
+                <span class="status-done">
+
+                    تحویل داده شد 🟢
+
+                </span>
+
+
+
+
+
+
+            </div>
+
+
+
+
+
+
+            {% empty %}
+
+
+
+            <p class="empty-text">
+
+                هنوز سفارشی تحویل داده نشده است
 
             </p>
 
 
 
+            {% endfor %}
 
-            <p>
-
-                تعداد:
-
-                {{ order.quantity }}
-
-            </p>
-
-
-
-
-            <p>
-
-                زمان سفارش:
-
-                {{ order.created_at|date:"Y/m/d - H:i" }}
-
-            </p>
-
-
-
-
-            <p class="status-text">
-
-                🟢 تحویل داده شد
-
-            </p>
 
 
 
@@ -137,27 +355,15 @@
 
 
 
-        {% empty %}
-
-
-        <h2>
-
-            هنوز سفارشی تحویل داده نشده
-
-        </h2>
-
-
-
-        {% endfor %}
-
-
-
 
     </div>
 
 
 
 
+
+
 </body>
+
 
 </html>

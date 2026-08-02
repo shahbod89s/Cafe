@@ -1,6 +1,5 @@
 {% load static %}
 
-
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
@@ -15,59 +14,170 @@
 
 
     <style>
-        /* وضعیت سفارش */
+        .orders-container {
 
-        .status-new {
-            border-top: 8px solid #f1c40f;
-        }
+            width: 90%;
 
+            max-width: 1200px;
 
-        .status-preparing {
-            border-top: 8px solid #e67e22;
-        }
-
-
-        .status-ready {
-            border-top: 8px solid #3498db;
-        }
-
-
-
-        .status-text {
-
-            margin-top: 15px;
-
-            font-weight: bold;
-
-            font-size: 17px;
+            margin: 40px auto;
 
         }
 
 
 
-        .order-date {
+        .order-section {
 
-            width: 100%;
+            background: #fff8e8;
 
-            margin: 40px 0 20px;
+            padding: 25px;
 
-            padding: 15px;
+            border-radius: 18px;
 
-            background: #fff4d6;
+            margin-bottom: 35px;
 
-            border-right: 6px solid #c69b3c;
+            box-shadow:
+                0 15px 35px rgba(0, 0, 0, .12);
+
+        }
+
+
+
+        .order-section h2 {
+
+            color: #5a4318;
+
+            margin-bottom: 20px;
+
+        }
+
+
+
+        .order-row {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            background: white;
+
+            padding: 15px 20px;
+
+            margin-bottom: 12px;
 
             border-radius: 12px;
 
-            font-size: 22px;
+            border-right: 6px solid #c69b3c;
 
-            font-weight: bold;
+        }
+
+
+
+        .order-row span {
+
+            font-weight: 700;
+
+            color: #3d2b13;
+
+        }
+
+
+
+        .order-row form {
+
+            margin: 0;
+
+        }
+
+
+
+        .hero-btn {
+
+            font-family: "Vazirmatn", sans-serif !important;
+
+            font-weight: 700;
+
+            border-radius: 12px;
+
+        }
+
+
+
+        .new-section {
+
+            border-right: 8px solid #f1c40f;
+
+        }
+
+
+
+        .preparing-section {
+
+            border-right: 8px solid #e67e22;
+
+        }
+
+
+
+        .ready-section {
+
+            border-right: 8px solid #3498db;
+
+        }
+
+
+
+
+        .empty-text {
+
+            text-align: center;
+
+            opacity: .7;
+
+        }
+
+
+
+
+        body.dark-mode .order-section {
+
+            background: #171512;
+
+        }
+
+
+
+        body.dark-mode .order-row {
+
+            background: #111;
+
+        }
+
+
+
+        body.dark-mode .order-row span {
+
+            color: #c9a84c;
+
+        }
+
+
+
+        body.dark-mode .order-section h2 {
+
+            color: #c69b3c;
 
         }
     </style>
 
 
 </head>
+
+
 
 
 <body>
@@ -78,7 +188,9 @@
 
 
         <h1>
+
             داشبورد مدیریت
+
         </h1>
 
 
@@ -97,11 +209,13 @@
 
 
 
+
         <a href="{% url 'foods_manage' %}" class="hero-btn">
 
             مدیریت غذاها
 
         </a>
+
 
 
         <a href="{% url 'completed_orders' %}" class="hero-btn">
@@ -117,186 +231,96 @@
 
 
 
-    <div class="menu-container">
 
 
-
-        {% for date, orders in grouped_orders.items %}
-
-
-
-        <h2 class="order-date">
-
-            📅 {{ date|date:"Y/m/d" }}
-
-        </h2>
+    <div class="orders-container">
 
 
 
 
-        {% for order in orders %}
 
-
-
-        <div class="food-card
-
-{% if order.status == 'new' %}
-
-status-new
-
-
-{% elif order.status == 'preparing' %}
-
-status-preparing
-
-
-{% elif order.status == 'ready' %}
-
-status-ready
-
-
-{% endif %}
-
-">
-
+        <div class="order-section new-section">
 
 
             <h2>
 
-                {{ order.food.name }}
+                🟡 سفارش‌های جدید
 
             </h2>
 
 
 
-            <p>
 
-                مشتری:
+            {% for order in new_orders %}
 
-                {{ order.customer_name }}
+
+
+            <div class="order-row">
+
+
+                <span>
+
+                    #{{order.id}}
+
+                </span>
+
+
+
+                <span>
+
+                    {{order.food.name}}
+
+                </span>
+
+
+
+                <span>
+
+                    {{order.customer_name}}
+
+                </span>
+
+
+
+                <span>
+
+                    {{order.created_at|date:"H:i"}}
+
+                </span>
+
+
+
+                <form method="POST" action="{% url 'update_order_status' order.id %}">
+
+                    {% csrf_token %}
+
+                    <input type="hidden" name="status" value="preparing">
+
+
+                    <button class="hero-btn" style="background:#e67e22;color:white;">
+
+                        شروع آماده‌سازی
+
+                    </button>
+
+
+                </form>
+
+
+
+            </div>
+
+
+
+            {% empty %}
+
+            <p class="empty-text">
+
+                سفارشی وجود ندارد
 
             </p>
 
-
-
-            <p>
-
-                تعداد:
-
-                {{ order.quantity }}
-
-            </p>
-
-
-            <p>
-
-                زمان سفارش:
-
-                {{ order.created_at|date:"H:i" }}
-
-            </p>
-
-
-
-            <p class="status-text">
-
-
-                {% if order.status == "new" %}
-
-                🟡 جدید
-
-
-                {% elif order.status == "preparing" %}
-
-                🟠 در حال آماده‌سازی
-
-
-                {% elif order.status == "ready" %}
-
-                🔵 آماده تحویل
-
-
-                {% endif %}
-
-
-            </p>
-
-
-
-
-
-
-            {% if order.status == "new" %}
-
-
-            <form method="POST" action="{% url 'update_order_status' order.id %}">
-
-                {% csrf_token %}
-
-                <input type="hidden" name="status" value="preparing">
-
-
-                <button class="hero-btn" style="background:#e67e22;width:100%;">
-
-                    شروع آماده‌سازی
-
-                </button>
-
-
-            </form>
-
-
-
-
-            {% elif order.status == "preparing" %}
-
-
-
-            <form method="POST" action="{% url 'update_order_status' order.id %}">
-
-                {% csrf_token %}
-
-                <input type="hidden" name="status" value="ready">
-
-
-                <button class="hero-btn" style="background:#3498db;width:100%;">
-
-                    آماده شد
-
-                </button>
-
-
-            </form>
-
-
-
-
-
-            {% elif order.status == "ready" %}
-
-
-
-
-            <form method="POST" action="{% url 'update_order_status' order.id %}">
-
-                {% csrf_token %}
-
-                <input type="hidden" name="status" value="done">
-
-
-                <button class="hero-btn" style="background:#27ae60;width:100%;">
-
-                    تحویل داده شد
-
-                </button>
-
-
-            </form>
-
-
-
-            {% endif %}
-
+            {% endfor %}
 
 
 
@@ -304,21 +328,200 @@ status-ready
 
 
 
-        {% endfor %}
 
 
 
-        {% empty %}
 
 
-        <h2>
 
-            سفارشی وجود ندارد
-
-        </h2>
+        <div class="order-section preparing-section">
 
 
-        {% endfor %}
+            <h2>
+
+                🟠 در حال آماده‌سازی
+
+            </h2>
+
+
+
+
+            {% for order in preparing_orders %}
+
+
+
+            <div class="order-row">
+
+
+                <span>
+
+                    #{{order.id}}
+
+                </span>
+
+
+
+                <span>
+
+                    {{order.food.name}}
+
+                </span>
+
+
+
+                <span>
+
+                    {{order.customer_name}}
+
+                </span>
+
+
+
+                <span>
+
+                    {{order.created_at|date:"H:i"}}
+
+                </span>
+
+
+
+
+                <form method="POST" action="{% url 'update_order_status' order.id %}">
+
+                    {% csrf_token %}
+
+                    <input type="hidden" name="status" value="ready">
+
+
+                    <button class="hero-btn" style="background:#3498db;color:white;">
+
+                        آماده شد
+
+                    </button>
+
+
+                </form>
+
+
+
+            </div>
+
+
+
+
+            {% empty %}
+
+            <p class="empty-text">
+
+                سفارشی وجود ندارد
+
+            </p>
+
+            {% endfor %}
+
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+        <div class="order-section ready-section">
+
+
+            <h2>
+
+                🔵 آماده تحویل
+
+            </h2>
+
+
+
+
+
+            {% for order in ready_orders %}
+
+
+
+            <div class="order-row">
+
+
+                <span>
+
+                    #{{order.id}}
+
+                </span>
+
+
+
+                <span>
+
+                    {{order.food.name}}
+
+                </span>
+
+
+
+                <span>
+
+                    {{order.customer_name}}
+
+                </span>
+
+
+
+                <span>
+
+                    {{order.created_at|date:"H:i"}}
+
+                </span>
+
+
+
+
+                <form method="POST" action="{% url 'update_order_status' order.id %}">
+
+                    {% csrf_token %}
+
+                    <input type="hidden" name="status" value="done">
+
+
+                    <button class="hero-btn" style="background:#27ae60;color:white;">
+
+                        تحویل داده شد
+
+                    </button>
+
+
+                </form>
+
+
+
+            </div>
+
+
+
+
+            {% empty %}
+
+            <p class="empty-text">
+
+                سفارشی وجود ندارد
+
+            </p>
+
+            {% endfor %}
+
+
+
+
+        </div>
+
 
 
 

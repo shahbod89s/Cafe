@@ -8,8 +8,10 @@ from menu.models import Order, Food
 from menu.forms import FoodForm
 
 
+
 def admin_check(user):
     return user.is_staff
+
 
 
 @user_passes_test(admin_check)
@@ -20,17 +22,19 @@ def dashboard_orders(request):
         "new_orders":
             Order.objects.filter(
                 status="new"
-            ),
+            ).order_by("-created_at"),
+
 
         "preparing_orders":
             Order.objects.filter(
                 status="preparing"
-            ),
+            ).order_by("-created_at"),
+
 
         "ready_orders":
             Order.objects.filter(
                 status="ready"
-            ),
+            ).order_by("-created_at"),
 
     }
 
@@ -38,8 +42,10 @@ def dashboard_orders(request):
     return render(
         request,
         "dashboard/orders.html",
-        context,
+        context
     )
+
+
 
 
 
@@ -48,18 +54,22 @@ def update_order_status(request, id):
 
     order = get_object_or_404(
         Order,
-        id=id,
+        id=id
     )
 
 
     if request.method == "POST":
 
-        order.status = request.POST.get("status")
+        order.status = request.POST.get(
+            "status"
+        )
 
         order.save()
 
 
     return redirect("dashboard")
+
+
 
 
 
@@ -79,6 +89,8 @@ def foods_manage(request):
 
 
 
+
+
 @user_passes_test(admin_check)
 def add_food(request):
 
@@ -94,7 +106,9 @@ def add_food(request):
 
             form.save()
 
-            return redirect("foods_manage")
+            return redirect(
+                "foods_manage"
+            )
 
 
     else:
@@ -113,8 +127,10 @@ def add_food(request):
 
 
 
+
+
 @user_passes_test(admin_check)
-def edit_food(request, id):
+def edit_food(request,id):
 
     food = get_object_or_404(
         Food,
@@ -135,7 +151,9 @@ def edit_food(request, id):
 
             form.save()
 
-            return redirect("foods_manage")
+            return redirect(
+                "foods_manage"
+            )
 
 
     else:
@@ -150,15 +168,17 @@ def edit_food(request, id):
         request,
         "dashboard/edit_food.html",
         {
-            "form": form,
-            "food": food,
+            "form":form,
+            "food":food
         }
     )
 
 
 
+
+
 @user_passes_test(admin_check)
-def delete_food(request, id):
+def delete_food(request,id):
 
     food = get_object_or_404(
         Food,
@@ -170,7 +190,9 @@ def delete_food(request, id):
 
         food.delete()
 
-        return redirect("foods_manage")
+        return redirect(
+            "foods_manage"
+        )
 
 
 
@@ -178,9 +200,11 @@ def delete_food(request, id):
         request,
         "dashboard/delete_food.html",
         {
-            "food": food
+            "food":food
         }
     )
+
+
 
 
 
@@ -189,27 +213,15 @@ def completed_orders(request):
 
     orders = Order.objects.filter(
         status="done"
-    ).order_by("-created_at")
-
-
-    grouped_orders = defaultdict(list)
-
-
-    for order in orders:
-
-        date = timezone.localtime(
-            order.created_at
-        ).date()
-
-
-        grouped_orders[date].append(order)
-
+    ).order_by(
+        "-created_at"
+    )
 
 
     return render(
         request,
         "dashboard/completed_orders.html",
         {
-            "grouped_orders": dict(grouped_orders)
+            "orders":orders
         }
     )
