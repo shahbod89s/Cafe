@@ -6,6 +6,7 @@
 <head>
 
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
@@ -305,57 +306,48 @@
 
 </head>
 
+<body>
+
 <button id="theme-toggle" class="theme-btn">
     ☀️
 </button>
 
-<body>
+{% block content %}
+{% endblock %}
 
+<footer class="copyright-footer">
 
-    {% block content %}
+    <p>
+        © 2026 Shahbod. All Rights Reserved.
+    </p>
 
-    {% endblock %}
+    <p>
+        طراحی و توسعه توسط Shahbod
+    </p>
 
+</footer>
 
+<script>
 
-    <footer class="copyright-footer">
+const button = document.getElementById("theme-toggle");
 
-        <p>
-            © 2026 Shahbod. All Rights Reserved.
-        </p>
+button.onclick = function () {
 
-        <p>
-            طراحی و توسعه توسط Shahbod
-        </p>
+    document.body.classList.toggle("dark-mode");
 
-    </footer>
+    if (document.body.classList.contains("dark-mode")) {
 
-    <script>
+        button.innerHTML = "🌙";
 
-        const button = document.getElementById("theme-toggle");
+    } else {
 
+        button.innerHTML = "☀️";
 
-        button.onclick = function () {
+    }
 
-            document.body.classList.toggle("dark-mode");
+};
 
-
-            if (document.body.classList.contains("dark-mode")) {
-
-                button.innerHTML = "🌙";
-
-            }
-
-            else {
-
-                button.innerHTML = "☀️";
-
-            }
-
-        };
-
-
-    </script>
+</script>
 
 </body>
 
