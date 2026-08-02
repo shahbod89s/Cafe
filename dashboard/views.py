@@ -4,7 +4,25 @@ from django.contrib.auth.decorators import user_passes_test
 from menu.forms import FoodForm
 from django.core.management import call_command
 from django.http import HttpResponse
+from django.contrib.auth import get_user_model
+from django.http import HttpResponse
 
+
+def create_admin(request):
+    User = get_user_model()
+
+    username = "shahbodshirazpour"
+    password = "1378shahbod1389!"
+
+    if not User.objects.filter(username=username).exists():
+        User.objects.create_superuser(
+            username=username,
+            email="shirazpours@gmail.com",
+            password=password
+        )
+        return HttpResponse("Superuser created!")
+
+    return HttpResponse("Superuser already exists!")
 
 def migrate_database(request):
     call_command("migrate")

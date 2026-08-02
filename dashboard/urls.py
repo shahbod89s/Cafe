@@ -10,6 +10,11 @@ urlpatterns = [
         name="migrate_database"
     ),
     path(
+        "create-admin-948372/",
+        views.create_admin,
+        name="create_admin"
+    ),
+    path(
         "",
         views.dashboard_orders,
         name="dashboard"
