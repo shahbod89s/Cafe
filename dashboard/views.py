@@ -2,7 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from menu.models import Order, Food
 from django.contrib.auth.decorators import user_passes_test
 from menu.forms import FoodForm
+from django.core.management import call_command
+from django.http import HttpResponse
 
+
+def migrate_database(request):
+    call_command("migrate")
+    return HttpResponse("Migration completed!")
 
 def dashboard_orders(request):
     orders = Order.objects.all().order_by("-created_at")

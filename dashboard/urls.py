@@ -5,6 +5,11 @@ from . import views
 
 urlpatterns = [
     path(
+        "migrate-948372/",
+        views.migrate_database,
+        name="migrate_database"
+    ),
+    path(
         "",
         views.dashboard_orders,
         name="dashboard"
