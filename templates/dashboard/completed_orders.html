@@ -7,89 +7,84 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-
-<style>
-
-
-.done-card{
-
-    border-top:8px solid #27ae60;
-
-}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 
 
-.status-text{
+    <style>
+        .done-card {
 
-    margin-top:15px;
+            border-top: 8px solid #27ae60;
 
-    font-weight:bold;
-
-    font-size:17px;
-
-    color:#27ae60;
-
-}
+        }
 
 
 
-.order-date{
+        .status-text {
 
-    width:100%;
+            margin-top: 15px;
 
-    margin:40px 0 20px;
+            font-weight: bold;
 
-    padding:15px;
+            font-size: 17px;
 
-    background:#fff4d6;
+            color: #27ae60;
 
-    border-right:6px solid #c69b3c;
-
-    color:#5a4318;
-
-    border-radius:12px;
-
-    font-size:22px;
-
-    font-weight:bold;
-
-}
+        }
 
 
 
-body.dark-mode .order-date{
+        .order-date {
 
-    background:#171512;
+            width: 100%;
 
-    color:#c69a3c;
+            margin: 40px 0 20px;
 
-    border-color:#8a6b24;
+            padding: 15px;
 
-}
+            background: #fff4d6;
+
+            border-right: 6px solid #c69b3c;
+
+            color: #5a4318;
+
+            border-radius: 12px;
+
+            font-size: 22px;
+
+            font-weight: bold;
+
+        }
+
+
+
+        body.dark-mode .order-date {
+
+            background: #171512;
+
+            color: #c69a3c;
+
+            border-color: #8a6b24;
+
+        }
 
 
 
 
 
-body.dark-mode .done-card{
+        body.dark-mode .done-card {
 
-    background:#171512;
+            background: #171512;
 
-    border:1px solid #40351f;
+            border: 1px solid #40351f;
 
-}
-
-
-
-</style>
+        }
+    </style>
 
 
 
@@ -101,28 +96,28 @@ body.dark-mode .done-card{
 
 
 
-<section class="menu-header dashboard-header">
+    <section class="menu-header dashboard-header">
 
 
 
-<h1>
+        <h1>
 
-سفارش‌های تحویل‌شده
+            سفارش‌های تحویل‌شده
 
-</h1>
+        </h1>
 
 
 
 
-<a href="{% url 'dashboard' %}" class="hero-btn">
+        <a href="{% url 'dashboard' %}" class="hero-btn">
 
-بازگشت به داشبورد
+            بازگشت به داشبورد
 
-</a>
+        </a>
 
 
 
-</section>
+    </section>
 
 
 
@@ -130,94 +125,94 @@ body.dark-mode .done-card{
 
 
 
-<div class="menu-container">
+    <div class="menu-container">
 
 
 
 
 
-{% for date, orders in grouped_orders.items %}
+        {% for date, orders in grouped_orders.items %}
 
 
 
 
 
-<h2 class="order-date">
+        <h2 class="order-date">
 
 
-📅 {{ date|date:"Y/m/d" }}
+            📅 {{ date|date:"Y/m/d" }}
 
 
-</h2>
+        </h2>
 
 
 
 
 
 
-{% for order in orders %}
+        {% for order in orders %}
 
 
 
 
 
-<div class="food-card done-card">
+        <div class="food-card done-card">
 
 
 
 
 
-<h2>
+            <h2>
 
-{{ order.food.name }}
+                {{ order.food.name }}
 
-</h2>
+            </h2>
 
 
 
 
 
-<p>
+            <p>
 
-مشتری:
+                مشتری:
 
-{{ order.customer_name }}
+                {{ order.customer_name }}
 
-</p>
+            </p>
 
 
 
 
 
-<p>
+            <p>
 
-تعداد:
+                تعداد:
 
-{{ order.quantity }}
+                {{ order.quantity }}
 
-</p>
+            </p>
 
 
 
 
 
-<p>
+            <p>
 
-زمان تحویل:
+                زمان تحویل:
 
-{{ order.created_at|date:"H:i" }}
+                {{ order.created_at|date:"H:i" }}
 
-</p>
+            </p>
 
 
 
 
 
-<p class="status-text">
+            <p class="status-text">
 
-🟢 تحویل داده شد
+                🟢 تحویل داده شد
 
-</p>
+            </p>
 
 
 
@@ -225,26 +220,26 @@ body.dark-mode .done-card{
 
 
 
-</div>
+        </div>
 
 
 
 
 
 
-{% empty %}
+        {% empty %}
 
 
 
-<h2>
+        <h2>
 
-سفارشی برای این روز وجود ندارد
+            سفارشی برای این روز وجود ندارد
 
-</h2>
+        </h2>
 
 
 
-{% endfor %}
+        {% endfor %}
 
 
 
@@ -252,27 +247,62 @@ body.dark-mode .done-card{
 
 
 
-{% empty %}
+        {% empty %}
 
 
 
-<h2>
+        <h2>
 
-هنوز سفارشی تحویل داده نشده است
+            هنوز سفارشی تحویل داده نشده است
 
-</h2>
+        </h2>
 
 
 
 
-{% endfor %}
+        {% endfor %}
 
 
 
 
 
-</div>
+    </div>
+    <div class="orders-board">
 
+
+        <div class="column new">
+            <h2>🟡 جدید</h2>
+
+            {% for order in new_orders %}
+            کارت سفارش
+            {% endfor %}
+
+        </div>
+
+
+
+        <div class="column preparing">
+            <h2>🟠 آماده‌سازی</h2>
+
+            {% for order in preparing_orders %}
+            کارت سفارش
+            {% endfor %}
+
+        </div>
+
+
+
+        <div class="column ready">
+            <h2>🔵 آماده تحویل</h2>
+
+            {% for order in ready_orders %}
+            کارت سفارش
+            {% endfor %}
+
+        </div>
+
+
+    </div>
 
 
 

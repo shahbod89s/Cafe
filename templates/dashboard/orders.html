@@ -6,68 +6,95 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-<style>
-
-/* وضعیت سفارش */
-
-.status-new{
-    border-top:8px solid #f1c40f;
-}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 
-.status-preparing{
-    border-top:8px solid #e67e22;
-}
+    <style>
+        /* وضعیت سفارش */
+
+        .status-new {
+            border-top: 8px solid #f1c40f;
+        }
 
 
-.status-ready{
-    border-top:8px solid #3498db;
-}
+        .status-preparing {
+            border-top: 8px solid #e67e22;
+        }
 
 
-
-.status-text{
-
-    margin-top:15px;
-
-    font-weight:bold;
-
-    font-size:17px;
-
-}
+        .status-ready {
+            border-top: 8px solid #3498db;
+        }
 
 
 
-.order-date{
+        .status-text {
 
-    width:100%;
+            margin-top: 15px;
 
-    margin:40px 0 20px;
+            font-weight: bold;
 
-    padding:15px;
+            font-size: 17px;
 
-    background:#fff4d6;
-
-    border-right:6px solid #c69b3c;
-
-    border-radius:12px;
-
-    font-size:22px;
-
-    font-weight:bold;
-
-}
+        }
 
 
-</style>
+
+        .order-date {
+
+            width: 100%;
+
+            margin: 40px 0 20px;
+
+            padding: 15px;
+
+            background: #fff4d6;
+
+            border-right: 6px solid #c69b3c;
+
+            border-radius: 12px;
+
+            font-size: 22px;
+
+            font-weight: bold;
+
+        }
+
+        /* دکمه‌های سفارش */
+
+        .hero-btn {
+
+            font-family: "Vazirmatn", sans-serif !important;
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+            letter-spacing: 0;
+
+            border-radius: 12px;
+
+            padding: 12px 20px;
+
+            cursor: pointer;
+
+        }
+
+
+
+        /* متن داخل دکمه در دارک مود */
+
+        body.dark-mode .hero-btn {
+
+            font-family: "Vazirmatn", sans-serif !important;
+
+        }
+    </style>
 
 
 </head>
@@ -77,71 +104,71 @@
 
 
 
-<section class="menu-header dashboard-header">
+    <section class="menu-header dashboard-header">
 
 
-<h1>
-داشبورد مدیریت
-</h1>
-
-
-
-<form method="POST" action="{% url 'logout' %}">
-
-{% csrf_token %}
-
-<button class="logout-btn">
-
-خروج
-
-</button>
-
-</form>
+        <h1>
+            داشبورد مدیریت
+        </h1>
 
 
 
-<a href="{% url 'foods_manage' %}" class="hero-btn">
+        <form method="POST" action="{% url 'logout' %}">
 
-مدیریت غذاها
+            {% csrf_token %}
 
-</a>
+            <button class="logout-btn">
 
+                خروج
 
-<a href="{% url 'completed_orders' %}" class="hero-btn">
+            </button>
 
-سفارش‌های تحویل‌شده
-
-</a>
-
-
-</section>
+        </form>
 
 
 
+        <a href="{% url 'foods_manage' %}" class="hero-btn">
+
+            مدیریت غذاها
+
+        </a>
 
 
-<div class="menu-container">
+        <a href="{% url 'completed_orders' %}" class="hero-btn">
+
+            سفارش‌های تحویل‌شده
+
+        </a>
 
 
-
-{% for date, orders in grouped_orders.items %}
-
-
-
-<h2 class="order-date">
-
-📅 {{ date|date:"Y/m/d" }}
-
-</h2>
+    </section>
 
 
 
 
-{% for order in orders %}
+
+    <div class="menu-container">
 
 
 
-<div class="food-card
+        {% for date, orders in grouped_orders.items %}
+
+
+
+        <h2 class="order-date">
+
+            📅 {{ date|date:"Y/m/d" }}
+
+        </h2>
+
+
+
+
+        {% for order in orders %}
+
+
+
+        <div class="food-card
 
 {% if order.status == 'new' %}
 
@@ -164,172 +191,169 @@ status-ready
 
 
 
-<h2>
+            <h2>
 
-{{ order.food.name }}
+                {{ order.food.name }}
 
-</h2>
+            </h2>
 
 
 
-<p>
+            <p>
 
-مشتری:
+                مشتری:
 
-{{ order.customer_name }}
+                {{ order.customer_name }}
 
-</p>
+            </p>
 
 
 
-<p>
+            <p>
 
-تعداد:
+                تعداد:
 
-{{ order.quantity }}
+                {{ order.quantity }}
 
-</p>
+            </p>
 
 
-<p>
+            <p>
 
-زمان سفارش:
+                زمان سفارش:
 
-{{ order.created_at|date:"H:i" }}
+                {{ order.created_at|date:"H:i" }}
 
-</p>
+            </p>
 
 
 
-<p class="status-text">
+            <p class="status-text">
 
 
-{% if order.status == "new" %}
+                {% if order.status == "new" %}
 
-🟡 جدید
+                🟡 جدید
 
 
-{% elif order.status == "preparing" %}
+                {% elif order.status == "preparing" %}
 
-🟠 در حال آماده‌سازی
+                🟠 در حال آماده‌سازی
 
 
-{% elif order.status == "ready" %}
+                {% elif order.status == "ready" %}
 
-🔵 آماده تحویل
+                🔵 آماده تحویل
 
 
-{% endif %}
+                {% endif %}
 
 
-</p>
+            </p>
 
 
 
 
 
 
-{% if order.status == "new" %}
+            {% if order.status == "new" %}
 
 
-<form method="POST" action="{% url 'update_order_status' order.id %}">
+            <form method="POST" action="{% url 'update_order_status' order.id %}">
 
-{% csrf_token %}
+                {% csrf_token %}
 
-<input type="hidden" name="status" value="preparing">
+                <input type="hidden" name="status" value="preparing">
 
 
-<button class="hero-btn"
-style="background:#e67e22;width:100%;">
+                <button class="hero-btn" style="background:#e67e22;width:100%;">
 
-شروع آماده‌سازی
+                    شروع آماده‌سازی
 
-</button>
+                </button>
 
 
-</form>
+            </form>
 
 
 
 
-{% elif order.status == "preparing" %}
+            {% elif order.status == "preparing" %}
 
 
 
-<form method="POST" action="{% url 'update_order_status' order.id %}">
+            <form method="POST" action="{% url 'update_order_status' order.id %}">
 
-{% csrf_token %}
+                {% csrf_token %}
 
-<input type="hidden" name="status" value="ready">
+                <input type="hidden" name="status" value="ready">
 
 
-<button class="hero-btn"
-style="background:#3498db;width:100%;">
+                <button class="hero-btn" style="background:#3498db;width:100%;">
 
-آماده شد
+                    آماده شد
 
-</button>
+                </button>
 
 
-</form>
+            </form>
 
 
 
 
 
-{% elif order.status == "ready" %}
+            {% elif order.status == "ready" %}
 
 
 
 
-<form method="POST" action="{% url 'update_order_status' order.id %}">
+            <form method="POST" action="{% url 'update_order_status' order.id %}">
 
-{% csrf_token %}
+                {% csrf_token %}
 
-<input type="hidden" name="status" value="done">
+                <input type="hidden" name="status" value="done">
 
 
-<button class="hero-btn"
-style="background:#27ae60;width:100%;">
+                <button class="hero-btn" style="background:#27ae60;width:100%;">
 
-تحویل داده شد
+                    تحویل داده شد
 
-</button>
+                </button>
 
 
-</form>
+            </form>
 
 
 
-{% endif %}
+            {% endif %}
 
 
 
 
-</div>
+        </div>
 
 
 
-{% endfor %}
+        {% endfor %}
 
 
 
-{% empty %}
+        {% empty %}
 
 
-<h2>
+        <h2>
 
-سفارشی وجود ندارد
+            سفارشی وجود ندارد
 
-</h2>
+        </h2>
 
 
-{% endfor %}
+        {% endfor %}
 
 
 
 
-</div>
+    </div>
 
 
 

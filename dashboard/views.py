@@ -15,48 +15,24 @@ def admin_check(user):
 @user_passes_test(admin_check)
 def dashboard_orders(request):
 
-    orders = Order.objects.exclude(
-        status="done"
-    ).order_by("-created_at")
-
-    grouped_orders = defaultdict(list)
-
-
-    for order in orders:
-
-        date = timezone.localtime(
-            order.created_at
-        ).date()
-
-
-        grouped_orders[date].append(order)
-
-
-
     context = {
-
-        "grouped_orders": dict(grouped_orders),
-
 
         "new_orders":
             Order.objects.filter(
                 status="new"
-            ).count(),
-
+            ),
 
         "preparing_orders":
             Order.objects.filter(
                 status="preparing"
-            ).count(),
-
+            ),
 
         "ready_orders":
             Order.objects.filter(
                 status="ready"
-            ).count(),
+            ),
 
     }
-
 
 
     return render(
@@ -64,6 +40,7 @@ def dashboard_orders(request):
         "dashboard/orders.html",
         context,
     )
+
 
 
 @user_passes_test(admin_check)
@@ -85,6 +62,7 @@ def update_order_status(request, id):
     return redirect("dashboard")
 
 
+
 @user_passes_test(admin_check)
 def foods_manage(request):
 
@@ -98,6 +76,7 @@ def foods_manage(request):
             "foods": foods
         }
     )
+
 
 
 @user_passes_test(admin_check)
@@ -131,6 +110,7 @@ def add_food(request):
             "form": form
         }
     )
+
 
 
 @user_passes_test(admin_check)
@@ -176,6 +156,7 @@ def edit_food(request, id):
     )
 
 
+
 @user_passes_test(admin_check)
 def delete_food(request, id):
 
@@ -202,6 +183,7 @@ def delete_food(request, id):
     )
 
 
+
 @user_passes_test(admin_check)
 def completed_orders(request):
 
@@ -210,9 +192,7 @@ def completed_orders(request):
     ).order_by("-created_at")
 
 
-
     grouped_orders = defaultdict(list)
-
 
 
     for order in orders:
