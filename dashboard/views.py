@@ -225,3 +225,17 @@ def completed_orders(request):
             "orders":orders
         }
     )
+    
+@user_passes_test(admin_check)
+def delete_completed_order(request, id):
+
+    order = get_object_or_404(
+        Order,
+        id=id
+    )
+
+    if request.method == "POST":
+
+        order.delete()
+
+    return redirect("completed_orders")

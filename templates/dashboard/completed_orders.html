@@ -283,6 +283,35 @@
             color: #c69b3c;
 
         }
+
+        .delete-btn {
+
+            background: #8b2e25;
+
+            color: white;
+
+            border: none;
+
+            padding: 10px 18px;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            font-family: "Vazirmatn", sans-serif;
+
+            font-weight: 700;
+
+        }
+
+
+
+        .delete-btn:hover {
+
+            background: #b33a2f;
+
+        }
+        
     </style>
 
 
@@ -409,7 +438,20 @@
                 </span>
 
 
+                <form method="POST" action="{% url 'delete_completed_order' order.id %}"
+                    onclick="event.stopPropagation();">
 
+                    {% csrf_token %}
+
+
+                    <button class="delete-btn">
+
+                        حذف
+
+                    </button>
+
+
+                </form>
 
 
 

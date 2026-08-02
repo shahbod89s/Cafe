@@ -58,4 +58,9 @@ urlpatterns = [
         views.delete_food,
         name="delete_food"
     ),
+    path(
+        "dashboard/completed/delete/<int:id>/",
+        views.delete_completed_order,
+        name="delete_completed_order"
+    ),
 ]
