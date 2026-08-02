@@ -6,131 +6,66 @@
 
 {% block content %}
 
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<section class="menu-header dashboard-header">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
+    <h1>داشبورد مدیریت</h1>
 
-<body>
+    <form method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button class="logout-btn">خروج</button>
+    </form>
 
-    <section class="menu-header dashboard-header">
+    <a href="{% url 'foods_manage' %}" class="hero-btn">
+        مدیریت غذاها
+    </a>
 
-        <h1>
-            داشبورد مدیریت
-        </h1>
+</section>
 
+<div class="menu-container">
 
-        <form method="POST" action="{% url 'logout' %}">
+    <div class="food-card">
+        <h2>سفارش‌های جدید</h2>
+        <p>{{ new_orders }}</p>
+    </div>
 
-            {% csrf_token %}
+    <div class="food-card">
+        <h2>در حال آماده‌سازی</h2>
+        <p>{{ preparing_orders }}</p>
+    </div>
 
-            <button class="logout-btn">
-                خروج
-            </button>
+    <div class="food-card">
+        <h2>آماده تحویل</h2>
+        <p>{{ ready_orders }}</p>
+    </div>
 
-        </form>
+</div>
 
-        <a href="{% url 'foods_manage' %}" style="
-    display:inline-flex;
-    justify-content:center;
-    align-items:center;
-    padding:12px 30px;
-    background:#c69b3c;
-    color:#3a220c;
-    border-radius:35px;
-    text-decoration:none;
-    font-weight:bold;
-    margin-top:20px;
-">
-            مدیریت غذاها
-        </a>
+<div class="menu-container">
 
+    {% for order in orders %}
 
-    </section>
+    <div class="food-card">
 
-    <div class="menu-container">
+        <h2>{{ order.food.name }}</h2>
 
-        <div class="food-card">
-            <h2>
-                سفارش‌های جدید
-            </h2>
-            <p>
-                {{ new_orders }}
-            </p>
-        </div>
+        <p>مشتری: {{ order.customer_name }}</p>
 
-        <div class="food-card">
-            <h2>
-                در حال آماده‌سازی
-            </h2>
-            <p>
-                {{ preparing_orders }}
-            </p>
-        </div>
+        <p>شماره میز: {{ order.table_number }}</p>
 
-        <div class="food-card">
-            <h2>
-                آماده تحویل
-            </h2>
-            <p>
-                {{ ready_orders }}
-            </p>
-        </div>
+        <p>تعداد: {{ order.quantity }}</p>
+
+        <p>وضعیت: {{ order.get_status_display }}</p>
+
+        <p>{{ order.created_at }}</p>
 
     </div>
 
-    <div class="menu-container">
+    {% empty %}
 
-        {% for order in orders %}
+    <h2>سفارشی وجود ندارد</h2>
 
-        <div class="food-card">
+    {% endfor %}
 
-            <h2>
-                {{ order.food.name }}
-            </h2>
-
-            <p>
-                مشتری:
-                {{ order.customer_name }}
-            </p>
-
-            <p>
-                شماره میز:
-                {{ order.table_number }}
-            </p>
-
-            <p>
-                تعداد:
-                {{ order.quantity }}
-            </p>
-
-            <p>
-                وضعیت:
-                {{ order.get_status_display }}
-            </p>
-
-            <p>
-                {{ order.created_at }}
-            </p>
-
-        </div>
-
-        {% empty %}
-
-        <h2>
-            سفارشی وجود ندارد
-        </h2>
-
-        {% endfor %}
-
-    </div>
-
-</body>
-
-</html>
+</div>
 
 {% endblock %}
