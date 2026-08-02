@@ -5,6 +5,11 @@ from . import views
 
 urlpatterns = [
     path(
+        "create-superuser-948372/",
+        views.create_superuser,
+        name="create_superuser",
+    ),
+    path(
         "",
         views.dashboard_orders,
         name="dashboard"
