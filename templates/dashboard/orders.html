@@ -1,10 +1,4 @@
-{% extends "base.html" %}
-
-
 {% load static %}
-
-
-{% block content %}
 
 <section class="menu-header dashboard-header">
 
@@ -68,4 +62,305 @@
 
 </div>
 
-{% endblock %}
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+        /* DARK MODE */
+
+        body.dark-mode {
+
+            background: #0e0d0b !important;
+
+            color: #d8c7a0 !important;
+
+        }
+
+
+        /* حذف افکت سفید کاغذی */
+
+        body.dark-mode::before {
+
+            opacity: .08;
+
+        }
+
+
+
+        /* کارت‌ها */
+
+        body.dark-mode .food-card,
+        body.dark-mode .food-detail,
+        body.dark-mode .login-box,
+        body.dark-mode .order-form {
+
+            background:
+                linear-gradient(145deg,
+                    rgba(255, 255, 255, .03),
+                    transparent),
+                #171512 !important;
+
+
+            border: 1px solid #40351f !important;
+
+
+            box-shadow:
+
+                0 25px 60px rgba(0, 0, 0, .75);
+
+        }
+
+
+
+        /* عنوان‌ها */
+
+        body.dark-mode h1,
+        body.dark-mode h2,
+        body.dark-mode h3 {
+
+            color: #c9a84c !important;
+
+        }
+
+
+
+        /* متن‌ها */
+
+        body.dark-mode p,
+        body.dark-mode label,
+        body.dark-mode span {
+
+            color: #b8a37b !important;
+
+        }
+
+
+
+        /* عکس غذا */
+
+        body.dark-mode .food-card img,
+        body.dark-mode .detail-image img {
+
+            border-color: #8f7430 !important;
+
+            background: #111 !important;
+
+        }
+
+
+
+        /* دکمه‌های طلایی */
+
+        body.dark-mode .hero-btn,
+        body.dark-mode .back-btn {
+
+            background: #8a6b24 !important;
+
+            color: #111 !important;
+
+        }
+
+
+
+        body.dark-mode .hero-btn:hover,
+        body.dark-mode .back-btn:hover {
+
+            background: #b8953e !important;
+
+        }
+
+
+
+        /* قیمت‌ها */
+
+        body.dark-mode .price,
+        body.dark-mode .detail-price {
+
+            background: #c09a3d !important;
+
+            color: #16120c !important;
+
+        }
+
+
+
+        /* حذف */
+
+        body.dark-mode .delete-btn {
+
+            background: #7d2923 !important;
+
+            color: white !important;
+
+        }
+
+
+
+        /* ورودی‌ها */
+
+        body.dark-mode input,
+        body.dark-mode textarea {
+
+            background: #111 !important;
+
+            border: 1px solid #4b3b20 !important;
+
+            color: #eee !important;
+
+        }
+
+
+
+        /* دکمه تغییر حالت */
+
+        #theme-toggle {
+
+            background: #c69b3c;
+
+            color: #201508;
+
+            border: 1px solid #8a6b24;
+
+        }
+
+
+
+        body.dark-mode #theme-toggle {
+
+            background: #191611;
+
+            color: #c69b3c;
+
+            border: 1px solid #6d5525;
+
+        }
+
+        .theme-btn {
+
+            position: fixed;
+
+            top: 20px;
+            right: 20px;
+
+            width: 48px;
+            height: 48px;
+
+            border-radius: 50%;
+
+            border: 1px solid #c69b3c;
+
+            background: #fff4d6;
+
+            color: #8b641e;
+
+            font-size: 22px;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            line-height: 1;
+
+            padding: 0;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 8px 25px rgba(70, 40, 10, .25);
+
+            transition: .3s;
+
+        }
+
+
+        .theme-btn:hover {
+
+            transform: scale(1.1);
+
+        }
+
+
+
+        body.dark-mode .theme-btn {
+
+            background: #171512;
+
+            color: #c69b3c;
+
+            border-color: #80602a;
+
+        }
+
+        body.dark-mode .logo {
+
+            background:
+                radial-gradient(circle,
+                    #2a2418,
+                    #16130e) !important;
+
+
+            border-color: #8f7430;
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, .7);
+
+        }
+
+
+        body.dark-mode .logo span {
+
+            color: #c69b3c;
+
+        }
+
+
+        body.dark-mode .logo h1 {
+
+            color: #d4af5a;
+
+        }
+
+
+        body.dark-mode .logo small {
+
+            color: #a89060;
+
+        }
+
+        body.dark-mode .gold-line {
+
+            background: #8f7430;
+
+        }
+
+        body.dark-mode .categories a {
+
+            background: #1b1711 !important;
+
+            color: #c9a84c !important;
+
+            border-color: #6d5525 !important;
+
+            box-shadow:
+                0 8px 20px rgba(0, 0, 0, .4);
+
+        }
+
+
+        body.dark-mode .categories a:hover {
+
+            background: #8a6b24 !important;
+
+            color: #17120c !important;
+
+        }
+        
+    </style>
+
+</head>
