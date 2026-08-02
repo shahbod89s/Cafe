@@ -5,6 +5,45 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap');
 
+:root {
+    --bg-color: #efe3c6;
+    --text-color: #2b2118;
+    --card-color: #fff8e8;
+    --border-color: #d6b878;
+    --gold: #c69b3c;
+}
+
+.theme-btn{
+
+    position:fixed;
+
+    top:20px;
+
+    right:20px;
+
+    width:45px;
+
+    height:45px;
+
+    border-radius:50%;
+
+    border:none;
+
+    cursor:pointer;
+
+    background:#5b3516;
+
+    color:#f5d78e;
+
+    font-size:20px;
+
+}
+
+body.dark-mode {
+    background:black !important;
+    color:white !important;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -14,8 +53,8 @@
 body {
     direction: rtl;
     font-family: "Vazirmatn", sans-serif;
-    background: #efe3c6;
-    color: #2b2118;
+    background:var(--bg-color);
+    color:var(--text-color);
     min-height: 100vh;
 }
 
@@ -268,16 +307,10 @@ body::before {
 
 .food-card {
 
-    background:
-
-        linear-gradient(135deg,
-            rgba(255, 255, 255, .5),
-            transparent),
-
-        #fff8e8;
+    background:var(--card-color);
 
 
-    border: 1px solid #d6b878;
+    border-color:var(--border-color);
 
 
     border-radius: 30px;
