@@ -47,9 +47,10 @@ class FoodForm(forms.ModelForm):
                 }
             ),
 
-            "image": forms.ClearableFileInput(
+            "image": forms.TextInput(
                 attrs={
-                    "class": "order-input"
+                    "class": "order-input",
+                    "placeholder": "مثال: pizza.webp"
                 }
             ),
 
