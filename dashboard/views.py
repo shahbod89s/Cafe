@@ -8,28 +8,17 @@ from menu.models import Order, Food
 from menu.forms import FoodForm
 
 
-
-# فقط ادمین وارد داشبورد شود
 def admin_check(user):
     return user.is_staff
 
 
-
-# ==========================
-# Dashboard
-# ==========================
-
 @user_passes_test(admin_check)
 def dashboard_orders(request):
 
-    # فقط سفارش‌هایی که هنوز تحویل داده نشده‌اند
     orders = Order.objects.exclude(
         status="done"
     ).order_by("-created_at")
 
-
-
-    # گروه‌بندی سفارش‌ها بر اساس روز
     grouped_orders = defaultdict(list)
 
 
@@ -77,13 +66,6 @@ def dashboard_orders(request):
     )
 
 
-
-
-
-# ==========================
-# تغییر وضعیت سفارش
-# ==========================
-
 @user_passes_test(admin_check)
 def update_order_status(request, id):
 
@@ -103,13 +85,6 @@ def update_order_status(request, id):
     return redirect("dashboard")
 
 
-
-
-
-# ==========================
-# مدیریت غذاها
-# ==========================
-
 @user_passes_test(admin_check)
 def foods_manage(request):
 
@@ -124,13 +99,6 @@ def foods_manage(request):
         }
     )
 
-
-
-
-
-# ==========================
-# افزودن غذا
-# ==========================
 
 @user_passes_test(admin_check)
 def add_food(request):
@@ -164,13 +132,6 @@ def add_food(request):
         }
     )
 
-
-
-
-
-# ==========================
-# ویرایش غذا
-# ==========================
 
 @user_passes_test(admin_check)
 def edit_food(request, id):
@@ -215,13 +176,6 @@ def edit_food(request, id):
     )
 
 
-
-
-
-# ==========================
-# حذف غذا
-# ==========================
-
 @user_passes_test(admin_check)
 def delete_food(request, id):
 
@@ -248,13 +202,6 @@ def delete_food(request, id):
     )
 
 
-
-
-
-# ==========================
-# سفارش‌های تحویل‌شده
-# ==========================
-
 @user_passes_test(admin_check)
 def completed_orders(request):
 
@@ -263,10 +210,26 @@ def completed_orders(request):
     ).order_by("-created_at")
 
 
+
+    grouped_orders = defaultdict(list)
+
+
+
+    for order in orders:
+
+        date = timezone.localtime(
+            order.created_at
+        ).date()
+
+
+        grouped_orders[date].append(order)
+
+
+
     return render(
         request,
         "dashboard/completed_orders.html",
         {
-            "orders": orders
+            "grouped_orders": dict(grouped_orders)
         }
     )

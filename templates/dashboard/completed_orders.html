@@ -2,43 +2,95 @@
 
 
 <!DOCTYPE html>
-
 <html lang="fa" dir="rtl">
 
 
 <head>
 
-
 <meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 
+
 <style>
 
 
-.completed-title{
+.done-card{
 
-text-align:center;
-
-margin:40px;
-
-color:#27ae60;
+    border-top:8px solid #27ae60;
 
 }
 
 
 
-.done-card{
+.status-text{
 
-border-top:8px solid #27ae60;
+    margin-top:15px;
+
+    font-weight:bold;
+
+    font-size:17px;
+
+    color:#27ae60;
+
+}
+
+
+
+.order-date{
+
+    width:100%;
+
+    margin:40px 0 20px;
+
+    padding:15px;
+
+    background:#fff4d6;
+
+    border-right:6px solid #c69b3c;
+
+    color:#5a4318;
+
+    border-radius:12px;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+}
+
+
+
+body.dark-mode .order-date{
+
+    background:#171512;
+
+    color:#c69a3c;
+
+    border-color:#8a6b24;
+
+}
+
+
+
+
+
+body.dark-mode .done-card{
+
+    background:#171512;
+
+    border:1px solid #40351f;
 
 }
 
 
 
 </style>
+
 
 
 </head>
@@ -49,15 +101,17 @@ border-top:8px solid #27ae60;
 
 
 
-
 <section class="menu-header dashboard-header">
+
 
 
 <h1>
 
-سفارش‌های تحویل شده
+سفارش‌های تحویل‌شده
 
 </h1>
+
+
 
 
 <a href="{% url 'dashboard' %}" class="hero-btn">
@@ -67,7 +121,9 @@ border-top:8px solid #27ae60;
 </a>
 
 
+
 </section>
+
 
 
 
@@ -78,11 +134,36 @@ border-top:8px solid #27ae60;
 
 
 
+
+
+{% for date, orders in grouped_orders.items %}
+
+
+
+
+
+<h2 class="order-date">
+
+
+📅 {{ date|date:"Y/m/d" }}
+
+
+</h2>
+
+
+
+
+
+
 {% for order in orders %}
 
 
 
+
+
 <div class="food-card done-card">
+
+
 
 
 
@@ -91,6 +172,7 @@ border-top:8px solid #27ae60;
 {{ order.food.name }}
 
 </h2>
+
 
 
 
@@ -106,6 +188,7 @@ border-top:8px solid #27ae60;
 
 
 
+
 <p>
 
 تعداد:
@@ -117,13 +200,15 @@ border-top:8px solid #27ae60;
 
 
 
+
 <p>
 
-زمان سفارش:
+زمان تحویل:
 
-{{ order.created_at|date:"Y/m/d - H:i" }}
+{{ order.created_at|date:"H:i" }}
 
 </p>
+
 
 
 
@@ -137,7 +222,12 @@ border-top:8px solid #27ae60;
 
 
 
+
+
+
 </div>
+
+
 
 
 
@@ -145,9 +235,10 @@ border-top:8px solid #27ae60;
 {% empty %}
 
 
+
 <h2>
 
-هنوز سفارشی تحویل داده نشده
+سفارشی برای این روز وجود ندارد
 
 </h2>
 
@@ -158,11 +249,36 @@ border-top:8px solid #27ae60;
 
 
 
+
+
+
+{% empty %}
+
+
+
+<h2>
+
+هنوز سفارشی تحویل داده نشده است
+
+</h2>
+
+
+
+
+{% endfor %}
+
+
+
+
+
 </div>
 
 
 
 
+
+
 </body>
+
 
 </html>
