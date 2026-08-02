@@ -2,21 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from menu.models import Order, Food
 from django.contrib.auth.decorators import user_passes_test
 from menu.forms import FoodForm
-from django.contrib.auth.models import User
-from django.http import HttpResponse
 
-
-def create_superuser(request):
-    if User.objects.filter(username="admin").exists():
-        return HttpResponse("Superuser already exists.")
-
-    User.objects.create_superuser(
-        username="shahbodshirazpour",
-        email="shirazpours@gmail.com",
-        password="1378shahbod1389"
-    )
-
-    return HttpResponse("Superuser created successfully.")
 
 def dashboard_orders(request):
     orders = Order.objects.all().order_by("-created_at")
