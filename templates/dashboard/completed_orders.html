@@ -2,36 +2,25 @@
 
 
 <!DOCTYPE html>
+
 <html lang="fa" dir="rtl">
 
 
 <head>
 
-    <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
 
 
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 
-
     <style>
-        .done-card {
+        .completed-title {
 
-            border-top: 8px solid #27ae60;
+            text-align: center;
 
-        }
-
-
-
-        .status-text {
-
-            margin-top: 15px;
-
-            font-weight: bold;
-
-            font-size: 17px;
+            margin: 40px;
 
             color: #27ae60;
 
@@ -39,53 +28,12 @@
 
 
 
-        .order-date {
+        .done-card {
 
-            width: 100%;
-
-            margin: 40px 0 20px;
-
-            padding: 15px;
-
-            background: #fff4d6;
-
-            border-right: 6px solid #c69b3c;
-
-            color: #5a4318;
-
-            border-radius: 12px;
-
-            font-size: 22px;
-
-            font-weight: bold;
-
-        }
-
-
-
-        body.dark-mode .order-date {
-
-            background: #171512;
-
-            color: #c69a3c;
-
-            border-color: #8a6b24;
-
-        }
-
-
-
-
-
-        body.dark-mode .done-card {
-
-            background: #171512;
-
-            border: 1px solid #40351f;
+            border-top: 8px solid #27ae60;
 
         }
     </style>
-
 
 
 </head>
@@ -96,17 +44,15 @@
 
 
 
-    <section class="menu-header dashboard-header">
 
+    <section class="menu-header dashboard-header">
 
 
         <h1>
 
-            سفارش‌های تحویل‌شده
+            سفارش‌های تحویل شده
 
         </h1>
-
-
 
 
         <a href="{% url 'dashboard' %}" class="hero-btn">
@@ -116,9 +62,7 @@
         </a>
 
 
-
     </section>
-
 
 
 
@@ -129,36 +73,11 @@
 
 
 
-
-
-        {% for date, orders in grouped_orders.items %}
-
-
-
-
-
-        <h2 class="order-date">
-
-
-            📅 {{ date|date:"Y/m/d" }}
-
-
-        </h2>
-
-
-
-
-
-
         {% for order in orders %}
 
 
 
-
-
         <div class="food-card done-card">
-
-
 
 
 
@@ -167,7 +86,6 @@
                 {{ order.food.name }}
 
             </h2>
-
 
 
 
@@ -183,7 +101,6 @@
 
 
 
-
             <p>
 
                 تعداد:
@@ -195,15 +112,13 @@
 
 
 
-
             <p>
 
-                زمان تحویل:
+                زمان سفارش:
 
-                {{ order.created_at|date:"H:i" }}
+                {{ order.created_at|date:"Y/m/d - H:i" }}
 
             </p>
-
 
 
 
@@ -217,12 +132,7 @@
 
 
 
-
-
-
         </div>
-
-
 
 
 
@@ -230,10 +140,9 @@
         {% empty %}
 
 
-
         <h2>
 
-            سفارشی برای این روز وجود ندارد
+            هنوز سفارشی تحویل داده نشده
 
         </h2>
 
@@ -244,71 +153,11 @@
 
 
 
-
-
-
-        {% empty %}
-
-
-
-        <h2>
-
-            هنوز سفارشی تحویل داده نشده است
-
-        </h2>
-
-
-
-
-        {% endfor %}
-
-
-
-
-
     </div>
-    <div class="orders-board">
-
-
-        <div class="column new">
-            <h2>🟡 جدید</h2>
-
-            {% for order in new_orders %}
-            کارت سفارش
-            {% endfor %}
-
-        </div>
-
-
-
-        <div class="column preparing">
-            <h2>🟠 آماده‌سازی</h2>
-
-            {% for order in preparing_orders %}
-            کارت سفارش
-            {% endfor %}
-
-        </div>
-
-
-
-        <div class="column ready">
-            <h2>🔵 آماده تحویل</h2>
-
-            {% for order in ready_orders %}
-            کارت سفارش
-            {% endfor %}
-
-        </div>
-
-
-    </div>
-
 
 
 
 
 </body>
-
 
 </html>
