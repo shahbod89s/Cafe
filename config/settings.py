@@ -157,4 +157,8 @@ AWS_S3_ENDPOINT_URL = "https://ik.imagekit.io/tafdvsgwf"
 
 AWS_S3_FILE_OVERWRITE = False
 
-DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+DEFAULT_FILE_STORAGE = "dashboard.storage.ImageKitStorage"
+
+IMAGEKIT_PRIVATE_KEY = os.environ.get("IMAGEKIT_PRIVATE_KEY")
+IMAGEKIT_PUBLIC_KEY = os.environ.get("IMAGEKIT_PUBLIC_KEY")
+IMAGEKIT_URL_ENDPOINT = "https://ik.imagekit.io/tafdvsgwf"
