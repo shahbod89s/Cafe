@@ -301,53 +301,68 @@
             color: #17120c !important;
 
         }
-        
     </style>
 
 </head>
 
 <body>
 
-<button id="theme-toggle" class="theme-btn">
-    ☀️
-</button>
+    <script>
+        if (localStorage.getItem("theme") === "dark") {
+            document.body.classList.add("dark-mode");
+        }
+    </script>
 
-{% block content %}
-{% endblock %}
+    <button id="theme-toggle" class="theme-btn">
+        ☀️
+    </button>
 
-<footer class="copyright-footer">
+    {% block content %}
+    {% endblock %}
 
-    <p>
-        © 2026 Shahbod. All Rights Reserved.
-    </p>
+    <footer class="copyright-footer">
 
-    <p>
-        طراحی و توسعه توسط Shahbod
-    </p>
+        <p>
+            © 2026 Shahbod. All Rights Reserved.
+        </p>
 
-</footer>
+        <p>
+            طراحی و توسعه توسط Shahbod
+        </p>
 
-<script>
+    </footer>
 
-const button = document.getElementById("theme-toggle");
+    <script>
 
-button.onclick = function () {
+        const button = document.getElementById("theme-toggle");
 
-    document.body.classList.toggle("dark-mode");
+        // هنگام باز شدن صفحه، وضعیت ذخیره‌شده را اعمال کن
+        if (localStorage.getItem("theme") === "dark") {
+            document.body.classList.add("dark-mode");
+            button.innerHTML = "🌙";
+        } else {
+            button.innerHTML = "☀️";
+        }
 
-    if (document.body.classList.contains("dark-mode")) {
+        button.onclick = function () {
 
-        button.innerHTML = "🌙";
+            document.body.classList.toggle("dark-mode");
 
-    } else {
+            if (document.body.classList.contains("dark-mode")) {
 
-        button.innerHTML = "☀️";
+                localStorage.setItem("theme", "dark");
+                button.innerHTML = "🌙";
 
-    }
+            } else {
 
-};
+                localStorage.setItem("theme", "light");
+                button.innerHTML = "☀️";
 
-</script>
+            }
+
+        };
+
+    </script>
 
 </body>
 
