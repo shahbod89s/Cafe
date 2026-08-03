@@ -69,18 +69,18 @@
         @media (max-width: 768px) {
 
             .completed-row {
-                flex-direction: column;
+                display: flex;
                 align-items: flex-start;
-                gap: 12px;
+            }
+
+            .completed-row form {
+                margin-top: 18px;
+                align-self: flex-end;
             }
 
             .completed-row span {
                 width: 100%;
                 word-break: break-word;
-            }
-
-            .completed-row form {
-                width: 100%;
             }
 
             .delete-btn {
