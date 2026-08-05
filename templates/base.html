@@ -4,7 +4,9 @@
 <html lang="fa" dir="rtl">
 
 <head>
+    <link rel="manifest" href="{% static 'manifest.json' %}">
 
+    <meta name="theme-color" content="#8a6b24">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -364,6 +366,20 @@
 
     </script>
 
+    <script>
+
+        if ("serviceWorker" in navigator) {
+
+            navigator.serviceWorker.register("/static/service-worker.js")
+
+                .then(() => console.log("Service Worker Registered"))
+
+                .catch(err => console.log(err));
+
+        }
+
+    </script>
+    
 </body>
 
 </html>
